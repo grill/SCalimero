@@ -1,0 +1,14 @@
+target/**/*
+target/*
+target/
+*.db
+*~
+.classpath
+.project
+.settings/**
+.manager/**
+.scala_dependencies
+target/
+lib_managed/
+src_managed/
+project/boot/
