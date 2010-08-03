@@ -1,4 +1,5 @@
 target/**/*
+target/*
 target/
 *.db
 *~
@@ -6,3 +7,4 @@ target/
 .project
 .settings/**
 .manager/**
+.scala_dependencies
