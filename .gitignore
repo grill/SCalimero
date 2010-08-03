@@ -15,3 +15,6 @@ project/boot/
 sbt-launch.jar
 sbt.bat
 ssh.exe.stackdump
+bin/**/*
+bin/*
+bin/
