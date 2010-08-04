@@ -1,7 +1,5 @@
 package org.scalimero.util
 
-import scala.collection.immutable.Map
-
 trait EventHelper[T] {
   class EventCallback(var fun : () => Unit) {
     def apply() = fun()
