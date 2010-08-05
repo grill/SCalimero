@@ -9,14 +9,14 @@ trait EventHelper[T] {
     def detach {unsubscribe(this)}
   }
 
-  val events : List[(T => Boolean, Any)] = List()
+  val events : Map[Any, T => Boolean] = Map()
   var callbacks = Map[Any, List[EventCallback]]() withDefaultValue Nil
   
   def eventList(in : T) =
-    events filter {_._1(in)} map {_._2}
+    events filter {_._2(in)} map {_._1}
   
   def subscribe(event : Any)(callback : => Unit) = {
-    if (events forall {_._2 != event})
+    if (events forall {_._1 != event})
       throw new NoSuchEventException("No event " + event)
     
     val ecallback = new EventCallback(callback _)
@@ -29,7 +29,7 @@ trait EventHelper[T] {
   }
   
   def callEvents(value : T){
-    events.map((eventSig) => if(eventSig._1(value)) callbacks(eventSig._2).map(op => spawn(op())))
+    events.map((eventSig) => if(eventSig._2(value)) callbacks(eventSig._1).map(op => spawn(op())))
   }
 }
 
