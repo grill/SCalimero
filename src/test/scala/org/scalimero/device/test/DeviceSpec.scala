@@ -4,6 +4,9 @@ import org.scalatest.Spec
 import org.scalatest.matchers.ShouldMatchers
 import scala.collection.mutable.Stack
 
+import org.scalimero.device._
+import org.scalimero.device.dtype._
+
 class DeviceSpec extends Spec with ShouldMatchers {
   
   describe("A Command Datapoint") {

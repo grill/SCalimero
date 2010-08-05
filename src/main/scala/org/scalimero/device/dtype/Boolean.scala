@@ -1,13 +1,11 @@
-import org.scalimero.device.dtype._
+package org.scalimero.device.dtype
 
 import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.dptxlator.DPTXlator._
 
-package object dtype {
-
-abstract trait BooleanValue
+abstract class BooleanValue extends DPValue
 abstract class BooleanType(dpt: DPT) extends DPType[Boolean](dpt) {
-    val dptx = new DPTXlatorBoolean (DPTXlatorBoolean.DPT_SWITCH.getID)
+    val dptx = new DPTXlatorBoolean (dpt.getID)
 	
 	def translate(value: String): Boolean = {
       dptx.setValue(value)
@@ -26,26 +24,22 @@ abstract class BooleanType(dpt: DPT) extends DPType[Boolean](dpt) {
 
 }
 
-trait False extends BooleanValue
+class False extends BooleanValue
 object False
-trait True extends BooleanValue
+class True extends BooleanValue
 object True
-implicit def true2bool(t: True.type) = true
-implicit def false2bool(t: False.type) = false
 
-class ACK extends DPValue
+//trait ACK extends DPValue
 object ACK extends BooleanType(DPTXlatorBoolean.DPT_ACK )
-object no_action extends ACK with False
-object acknwoledge extends ACK with True
+object no_action extends False // with ACK
+object acknwoledge extends True // with ACK
 
-class Alarm extends DPValue
+//trait Alarm extends DPValue
 object Alarm extends BooleanType(DPTXlatorBoolean.DPT_ALARM )
-object no_alarm extends Alarm with False
-object alarm extends Alarm with True
+object no_alarm extends False // with Alarm
+object alarm extends True // with Alarm
 
-class Switch extends DPValue
+//trait Switch extends DPValue
 object Switch extends BooleanType(DPTXlatorBoolean.DPT_SWITCH )
-object off extends Switch with False
-object on extends Switch with True
-
-}
+object off extends False // with Switch
+object on extends True // with Switch
