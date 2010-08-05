@@ -4,6 +4,7 @@ import tuwien.auto.calimero.link._
 import tuwien.auto.calimero.link.medium._
 import tuwien.auto.calimero.process._
 import tuwien.auto.calimero._
+import tuwien.auto.calimero.datapoint._
 
 object Network {
   var default : Network = null
