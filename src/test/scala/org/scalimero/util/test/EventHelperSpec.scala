@@ -9,8 +9,8 @@ class EventHelperSpec extends Spec with ShouldMatchers {
   describe("An EventHelper") {
     describe("(Hello World event)") {
       var eh = new EventHelper[String] {
-          val events = List(
-            ({s:String => s == "hello"} -> "world")
+          override val events : Map[Any, String => Boolean] = Map(
+            ("world" -> {s:String => s == "hello"})
           )
         }
       
@@ -40,8 +40,8 @@ class EventHelperSpec extends Spec with ShouldMatchers {
     
     describe("(Callback Management)") {
       val eh = new EventHelper[String] {
-          val events = List(
-            ({s:String => s == "hello"} -> "world")
+          override val events : Map[Any, String => Boolean] = Map(
+            ("world" -> {s:String => s == "hello"})
           )
         }
       
@@ -84,12 +84,12 @@ class EventHelperSpec extends Spec with ShouldMatchers {
       it ("should work") {
         val eh = new EventHelper[Int] {
           var oldVal = 0
-          val events = List(
-            ({i:Int => i >= 10} -> ">=10"),
-            ({i:Int => i == 10} -> "=10"),
-            ({i:Int => i > 10} -> ">10"),
-            ({i:Int => i < 10} -> "<10"),
-            ({i:Int => val ret = i < oldVal; oldVal = i; ret} -> "<")
+          override val events : Map[Any, Int => Boolean] = Map(
+            (">=10" -> {i:Int => i >= 10}),
+            ("=10" -> {i:Int => i == 10}),
+            (">10" -> {i:Int => i > 10}),
+            ("<10" -> {i:Int => i < 10}),
+            ("<" -> {i:Int => val ret = i < oldVal; oldVal = i; ret})
           )
         }
         var ge10 = false

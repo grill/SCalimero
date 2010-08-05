@@ -47,9 +47,9 @@ class Network(var router : String) {
   def unsubscribe(a : Actor) = act ! Unsubscribe(a : Actor)
   
   def open {
-    opened = true
     pc = new ProcessCommunicatorImpl(networkLink)
     pc.addProcessListener(pl)
+    opened = true
   }
   
   def close {
