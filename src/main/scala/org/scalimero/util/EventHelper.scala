@@ -1,5 +1,7 @@
 package org.scalimero.util
 
+import scala.concurrent.ops._
+
 trait EventHelper[T] {
   class EventCallback(var fun : () => Unit) {
     def apply() = fun()
@@ -27,7 +29,7 @@ trait EventHelper[T] {
   }
   
   def callEvents(value : T){
-    events.map((eventSig) => if(eventSig._1(value)) callbacks(eventSig._2).map(_()))
+    events.map((eventSig) => if(eventSig._1(value)) callbacks(eventSig._2).map(op => spawn(op())))
   }
 }
 
