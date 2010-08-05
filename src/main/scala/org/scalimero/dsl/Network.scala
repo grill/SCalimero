@@ -5,6 +5,8 @@ import tuwien.auto.calimero.link.medium._
 import tuwien.auto.calimero.process._
 import tuwien.auto.calimero._
 import tuwien.auto.calimero.datapoint._
+import scala.actors.Actor
+import scala.actors.Actor._
 
 object Network {
   var default : Network = null
@@ -21,11 +23,28 @@ class Network(var router : String) {
   var nl : KNXNetworkLink = null
   var opened = false
   var pc : ProcessCommunicator = null
+  var subscriptions = Map[GroupAddress,List[Actor]]() withDefaultValue Nil
   
-  object pl extends ProcessListener{
-    def detached(e : DetachEvent) {}
-    def groupWrite(e : ProcessEvent) {}
+  val act = actor {
+    loop {
+      react{
+        case Subscribe(a, gas) => gas foreach {ga => subscriptions = subscriptions updated (ga, a :: subscriptions(ga))}
+        case Unsubscribe(a) => subscriptions filterNot {_._2 == a}
+        case e : DetachEvent => subscriptions flatMap {_._2} foreach {_ ! e}
+        case e : ProcessEvent => subscriptions(e.getDestination) foreach {_ ! e}
+      }
+    }
   }
+  
+  case class Subscribe(a : Actor, ga : List[GroupAddress])
+  case class Unsubscribe(a : Actor)
+  object pl extends ProcessListener{
+    def detached(e : DetachEvent) {act ! e}
+    def groupWrite(e : ProcessEvent) {act ! e}
+  }
+  
+  def subscribe(a : Actor, ga : List[GroupAddress]) = act ! Subscribe(a : Actor, ga : List[GroupAddress])
+  def unsubscribe(a : Actor) = act ! Unsubscribe(a : Actor)
   
   def open {
     opened = true
