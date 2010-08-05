@@ -7,7 +7,7 @@ trait EventHelper[T] {
     def detach {unsubscribe(this)}
   }
 
-  val events : List[(T => Boolean, Any)]
+  val events : List[(T => Boolean, Any)] = List()
   var callbacks = Map[Any, List[EventCallback]]() withDefaultValue Nil
   
   def eventList(in : T) =
