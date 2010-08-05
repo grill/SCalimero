@@ -23,9 +23,9 @@ class Network(var router : String) {
   var nl : KNXNetworkLink = null
   var opened = false
   var pc : ProcessCommunicator = null
-  var subscriptions = Map[GroupAddress,List[Actor]]() withDefaultValue Nil
   
   val act = actor {
+    var subscriptions = Map[GroupAddress,List[Actor]]() withDefaultValue Nil
     loop {
       react{
         case Subscribe(a, gas) => gas foreach {ga => subscriptions = subscriptions updated (ga, a :: subscriptions(ga))}
@@ -63,5 +63,12 @@ class Network(var router : String) {
   
   def networkLink = if(nl != null && nl.isOpen) nl else {
     new KNXNetworkLinkIP(router, medium)
+  }
+  
+  def apply(stuff : =>Unit) {
+    val olddefault = Network.default
+    Network.default = this
+    stuff
+    Network.default = olddefault
   }
 }
