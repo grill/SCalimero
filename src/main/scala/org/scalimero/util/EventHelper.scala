@@ -29,7 +29,7 @@ trait EventHelper[T] {
   }
   
   def callEvents(value : T){
-    events.map((eventSig) => if(eventSig._2(value)) callbacks(eventSig._1).map(op => spawn(op())))
+    events.map((eventSig) => if(eventSig._2(value)) callbacks(eventSig._1).map(op => op()))
   }
 }
 

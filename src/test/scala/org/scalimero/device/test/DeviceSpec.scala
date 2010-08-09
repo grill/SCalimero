@@ -13,9 +13,9 @@ class DeviceSpec extends Spec with ShouldMatchers {
   describe("A Command Datapoint") {
     it("should be able to create instances with differnt mainnumbers and dptid's"){
 	  Network("172.19.0.7"){
-		StateDevice("1/1/1", BOOLEAN, Switch)
+		Device("1/1/1", BOOLEAN, SWITCH)
 	  }
-	  val cdptbool = StateDevice("1/1/1", BOOLEAN, Switch)
+	  val cdptbool = Device("1/1/1", BOOLEAN, SWITCH)
     }
     
     it("should be able to send knxmessages with differnt types"){

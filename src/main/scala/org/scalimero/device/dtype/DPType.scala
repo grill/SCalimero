@@ -14,5 +14,3 @@ abstract class DPType[T](val dpt: DPT) {
 object DPType{
 	implicit def dpt2dptype(dpt: DPT) = new DPType(DPT)
 }*/
-
-class DPValue

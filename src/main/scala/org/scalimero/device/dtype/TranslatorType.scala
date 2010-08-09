@@ -4,6 +4,8 @@ abstract class TranslatorType{
 	val mainNumber: Int
 }
 
+class TranslatorTypeNotFoundException(msg: String) extends Exception("The value " + msg + "is not a vaild mainNumber!")
+
 object TranslatorType{
 	implicit def Int2TT(mainNumber: Int) = mainNumber match {
 		case BOOLEAN.mainNumber => BOOLEAN

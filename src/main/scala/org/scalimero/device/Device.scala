@@ -15,6 +15,7 @@ import tuwien.auto.calimero.process._
 abstract class Device[T](destAddress:String, tt: TranslatorType, dpt: DPType[T], name: String, net: Network) extends Actor with EventHelper[T]{
     val dp: Datapoint
 	
+	start
 	override def act() {
 		loop{
 			react {
@@ -43,12 +44,17 @@ abstract class Device[T](destAddress:String, tt: TranslatorType, dpt: DPType[T],
 	case class UnSubscribe(callback: EventCallback)
 }
 
-case class CommandDevice[T](destAddress:String, tt: TranslatorType, dpt: DPType[T], name: String = "", net: Network = Network.default) 
+object Device {
+	def apply[T](destAddress:String, tt: TranslatorType, dpt: DPType[T], name: String = "", net: Network = Network.default) =
+		new StateDevice(destAddress, tt, dpt)
+}
+
+class CommandDevice[T](destAddress:String, tt: TranslatorType, dpt: DPType[T], name: String = "", net: Network = Network.default) 
 	extends Device(destAddress, tt, dpt, name, net){
 	override val dp = new CommandDP(new GroupAddress(destAddress), name, tt.mainNumber, dpt.id)
 }
 
-case class StateDevice[T](destAddress:String, tt: TranslatorType, dpt: DPType[T], name: String = "", net: Network = Network.default) 
+class StateDevice[T](destAddress:String, tt: TranslatorType, dpt: DPType[T], name: String = "", net: Network = Network.default) 
 	extends Device(destAddress, tt, dpt, name, net){
 	override val dp = new StateDP(new GroupAddress(destAddress), name, tt.mainNumber, dpt.id)
 	
