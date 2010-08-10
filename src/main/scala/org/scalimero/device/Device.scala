@@ -83,13 +83,13 @@ object Device {
     new StateDevice(destAddress, tt, dpt, name, net)
 }
 
-class CommandDevice[DataPointType, PrimitveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[T], name: String = "", net: Network = Network.default) 
+class CommandDevice[DataPointType, PrimitveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointType, PrimitveType], name: String = "", net: Network = Network.default) 
   extends Device(destAddress, tt, dpt, name, net){
   override val dp = new CommandDP(destAddress, name, tt.mainNumber, dpt.id)
   
 }
 
-class StateDevice[DataPointType, PrimitveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[T], name: String = "", net: Network = Network.default) 
+class StateDevice[DataPointType, PrimitveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointType, PrimitveType], name: String = "", net: Network = Network.default) 
   extends Device(destAddress, tt, dpt, name, net){
   override val dp = new StateDP(destAddress, name, tt.mainNumber, dpt.id)
 
