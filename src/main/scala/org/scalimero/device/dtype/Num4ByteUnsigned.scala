@@ -19,9 +19,28 @@ abstract class Num4ByteUnsignedValue(val value: Long) extends DPValue {
   }
 }
 
+abstract class Num4ByteUnsignedType[T](dpt: DPT) extends DPType[T, Long](dpt: DPT) {
+    val dptx = new DPTXlator4ByteUnsigned (dpt)
+	
+	def translate(value: String): Long = {
+      dptx.setValue(value)
+      dptx.getValueUnsigned
+	}
+	
+	def translate(value: Long): String = {
+      dptx.setValue(value) 
+      dptx.getValue
+	}
+	
+    def translate (value: Array[Byte]): String = {
+		dptx.setData(value)
+		dptx.getValue
+    }   
+}
+
 package object num4ByteUnsigned {
   implicit def int2VALUE_4_UCOUNT(i : Int) = new VALUE_4_UCOUNT(i)
-  object VALUE_4_UCOUNT extends Num4ByteUnsignedType[VALUE_4_UCOUNT](DPTXlator4ByteUnsigned.VALUE_4_UCOUNT)
+  object VALUE_4_UCOUNT extends Num4ByteUnsignedType[VALUE_4_UCOUNT](DPTXlator4ByteUnsigned.DPT_VALUE_4_UCOUNT)
 
   class VALUE_4_UCOUNT(override val value : Long) extends Num4ByteUnsignedValue(value) {
     override val unit = "pulses"

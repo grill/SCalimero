@@ -4,7 +4,7 @@ import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.dptxlator.DPTXlator._
 
 //Not tested
-abstract class StringType(override val dpt: DPT) extends DPType[String](dpt) {
+abstract class StringType(override val dpt: DPT) extends DPType[STRING, String](dpt) {
   val dptx = new DPTXlatorString (dpt)
 
   def translate(value: String): String = value
