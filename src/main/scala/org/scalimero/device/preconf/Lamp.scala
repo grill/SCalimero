@@ -2,6 +2,7 @@ package org.scalimero.device.preconf
 
 import org.scalimero.device._
 import org.scalimero.device.dtype._
+import org.scalimero.device.dtype.Boolean._
 import org.scalimero.device.dvalue._
 
 object Lamp {

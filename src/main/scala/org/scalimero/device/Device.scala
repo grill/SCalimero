@@ -13,33 +13,33 @@ import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.process._
 
 abstract class Device[T](destAddress:String, tt: TranslatorType, dpt: DPType[T], name: String, net: Network) extends Actor with EventHelper[T] with WriteCallbackHelper[T]{
-    val dp: Datapoint
-	
-	start
-	override def act() {
-		loop{
-			react {
-				case p: ProcessEvent => {
-				  val value : T= dpt.translate(dpt.translate(p.getASDU))
-				  callEvents(value)
-				  callWrites(value)
-				}
-				case Subscribe(event, callback) => reply { super.subscribe(event)(callback) }
-				case UnSubscribe(callback) => super.unsubscribe(callback)
-				case WSubscribe(callback) => reply { super.subscribe(callback) }
-				case WUnsubscribe(callback) => super.unsubscribe(callback)
-				case _ => println("A message has arrived Sir!")
-			}
+  val dp: Datapoint
+
+  start
+  override def act() {
+    loop{
+      react {
+        case p: ProcessEvent => {
+		  val value : T= dpt.translate(dpt.translate(p.getASDU))
+		  callEvents(value)
+		  callWrites(value)
 		}
-	}
-	net.subscribe(this, List(new GroupAddress(destAddress)))
-	def send(value: T) = net.send(dp, dpt.translate(value))
-	def detach() = net.unsubscribe(this)
-	
-	override def subscribe(event: Any) (callback: => Unit) = {
-		this !? Subscribe(event, callback _) match {
-			case e: EventCallback => e
-			case _ => throw new Exception("This happens all the time(hahaha)!")
+		case Subscribe(event, callback) => reply { super.subscribe(event)(callback) }
+		case UnSubscribe(callback) => super.unsubscribe(callback)
+		case WSubscribe(callback) => reply { super.subscribe(callback) }
+		case WUnsubscribe(callback) => super.unsubscribe(callback)
+		case _ => println("A message has arrived Sir!")
+      }
+    }
+  }
+  net.subscribe(this, List(new GroupAddress(destAddress)))
+  def send(value: T) = net.send(dp, dpt.translate(value))
+  def detach() = net.unsubscribe(this)
+
+  override def subscribe(event: Any) (callback: => Unit) = {
+    this !? Subscribe(event, callback _) match {
+      case e: EventCallback => e
+      case _ => throw new Exception("This happens all the time(hahaha)!")
 		}
 	}
 	override def unsubscribe(callback: EventCallback) {
