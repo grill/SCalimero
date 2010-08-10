@@ -26,3 +26,5 @@ abstract class BooleanType(dpt: DPT) extends DPType[Boolean](dpt) {
 object ACK extends BooleanType(DPTXlatorBoolean.DPT_ACK )
 object ALARM extends BooleanType(DPTXlatorBoolean.DPT_ALARM )
 object SWITCH extends BooleanType(DPTXlatorBoolean.DPT_SWITCH )
+object BINARYVALUE extends BooleanType(DPTXlatorBoolean.DPT_BINARYVALUE )
+object BOOL extends BooleanType(DPTXlatorBoolean.DPT_BOOL )
