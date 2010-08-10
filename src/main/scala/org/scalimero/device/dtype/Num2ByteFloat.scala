@@ -1,4 +1,4 @@
-package org.scalimero.device.dvalue
+package org.scalimero.device.dtype
 
 import org.scalimero.device.dtype._
 
@@ -16,7 +16,31 @@ abstract class Num2ByteFloatValue(val value: Float) extends DPValue {
   override def toString = value.toString + " " + unit
 }
 
+abstract class Num2ByteFloatType(dpt: DPT) extends DPType[Float](dpt: DPT) {
+    val dptx = new DPTXlator2ByteFloat (dpt)
+	
+	def translate(value: String): Float = {
+      dptx.setValue(value)
+      dptx.getValueFloat
+	}
+	
+	def translate(value: Float): String = {
+      dptx.setValue(value) 
+      dptx.getValue
+	}
+	
+    def translate (value: Array[Byte]): String = {
+		dptx.setData(value)
+		dptx.getValue
+    }   
+}
+
 object Num2ByteFloat {
+  /*object AIR_PRESSURE extends Num2ByteFloatType(DPTXlator2ByteFloat.DPT_AIR_PRESSURE ){
+	  implicit def int2airp(i: Int) = new AIR_PRESSURE(i.toFloat)
+	  implicit def float2airp(i: Float) = new AIR_PRESSURE(i)
+  }*/
+
   class AIR_PRESSURE(override val value: Float) extends Num2ByteFloatValue(value) {
     override val min = 0
 	  override val unit = "Pa"
