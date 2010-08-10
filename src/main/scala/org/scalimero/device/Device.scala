@@ -23,8 +23,8 @@ trait TStateDevice[T] extends TDevice {
   def read(): T
 }
 
-abstract class Device[T](destAddr: GroupAddress, tt: TranslatorType, dpt: DPType[T], name: String, net: Network)
-  extends Actor with EventHelper[T] with WriteCallbackHelper[T]{
+abstract class Device[DataPointType, PrimitveType](destAddr: GroupAddress, tt: TranslatorType, dpt: DPType[DataPointType, PrimitveType], name: String, net: Network)
+  extends Actor with EventHelper[PrimitveType] with WriteCallbackHelper[PrimitveType]{
 
   val dp: Datapoint
 
@@ -32,13 +32,13 @@ abstract class Device[T](destAddr: GroupAddress, tt: TranslatorType, dpt: DPType
   net.subscribe(this, List(destAddr))
   
   def detach() = net.unsubscribe(this)
-  def send(value: T) = net.send(dp, dpt.translate(value))
-  
+  def send(value: DataPointType) = net.send(dp, dpt.translate(value.value))
+
   override def act() {
     loop{
       react {
         case p: ProcessEvent => {
-          val value : T= dpt.translate(dpt.translate(p.getASDU))
+          val value : PrimitveType= dpt.translate(dpt.translate(p.getASDU))
           callEvents(value)
           callWrites(value)
         }
@@ -61,7 +61,7 @@ abstract class Device[T](destAddr: GroupAddress, tt: TranslatorType, dpt: DPType
     this ! UnSubscribe(callback)
   }
 
-  override def subscribe(callback : T => Unit) = {
+  override def subscribe(callback : PrimitveType => Unit) = {
     this !? WSubscribe(callback) match {
       case w: WriteCallback => w
       case _ => throw new Exception("This happens all the time(hahaha)!")
@@ -74,24 +74,24 @@ abstract class Device[T](destAddr: GroupAddress, tt: TranslatorType, dpt: DPType
   case class Subscribe(event: Any, callback: () => Unit)
   case class UnSubscribe(callback: EventCallback)
   
-  case class WSubscribe(callback : T => Unit)
+  case class WSubscribe(callback : PrimitveType => Unit)
   case class WUnsubscribe(callback : WriteCallback)
 }
 
 object Device {
-  def apply[T](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[T], name: String = "", net: Network = Network.default) =
-    new StateDevice(destAddress, tt, dpt)
+  def apply[DataPointType, PrimitveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointType, PrimitveType], name: String = "", net: Network = Network.default) =
+    new StateDevice(destAddress, tt, dpt, name, net)
 }
 
-class CommandDevice[T](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[T], name: String = "", net: Network = Network.default) 
+class CommandDevice[DataPointType, PrimitveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointType, PrimitveType], name: String = "", net: Network = Network.default) 
   extends Device(destAddress, tt, dpt, name, net){
   override val dp = new CommandDP(destAddress, name, tt.mainNumber, dpt.id)
   
 }
 
-class StateDevice[T](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[T], name: String = "", net: Network = Network.default) 
+class StateDevice[DataPointType, PrimitveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointType, PrimitveType], name: String = "", net: Network = Network.default) 
   extends Device(destAddress, tt, dpt, name, net){
   override val dp = new StateDP(destAddress, name, tt.mainNumber, dpt.id)
 
-  def read(): T = dpt.translate(net.read(dp))
+  def read(): PrimitveType = dpt.translate(net.read(dp))
 }

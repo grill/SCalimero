@@ -4,7 +4,6 @@ import org.scalimero.device.dtype._
 
 import tuwien.auto.calimero.GroupAddress
 
-
 package object device {
   //Device type Boolean
   implicit def true2bool(t: True.type) = true

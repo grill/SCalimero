@@ -14,12 +14,13 @@ abstract class StringType(override val dpt: DPT) extends DPType[String](dpt) {
   }
 }
 
-object String {
+
+package object string {
   trait implicits {
     implicit def string2STRING(s : String) = new STRING(s)
   }
-  object ISO_8859_1 extends DateType(DPTXlatorString.DPT_STRING_8859_1)
-  object ASCII extends DateType(DPTXlatorString.DPT_STRING_ASCII)
+  object ISO_8859_1 extends StringType(DPTXlatorString.DPT_STRING_8859_1)
+  object ASCII extends StringType(DPTXlatorString.DPT_STRING_ASCII)
 }
 
 class STRING(val value: String) extends DPValue
