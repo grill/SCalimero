@@ -16,6 +16,9 @@ object Network {
     default = new Network(router)
     default
   }
+  
+  def open = default.open
+  def close = default.close
 }
 
 class Network(var router : String) {

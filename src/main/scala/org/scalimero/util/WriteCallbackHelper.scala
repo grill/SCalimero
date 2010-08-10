@@ -6,15 +6,15 @@ trait WriteCallbackHelper[T] {
     def update(newFun : T => Unit) = fun = newFun
     def detach = unsubscribe(this)
   }
-  var callbacks = List[WriteCallback]()
+  var wcallbacks = List[WriteCallback]()
   
   def subscribe(callback : T => Unit) = {
     val wcallback = new WriteCallback(callback)
-    callbacks = wcallback :: callbacks
+    wcallbacks = wcallback :: wcallbacks
     wcallback
   }
   def unsubscribe(callback : WriteCallback) {
-    callbacks = callbacks filterNot (_ == callback)
+    wcallbacks = wcallbacks filterNot (_ == callback)
   }
-  def callWrites(value : T) {callbacks map {_(value)}}
+  def callWrites(value : T) {wcallbacks map {_(value)}}
 }
