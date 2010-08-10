@@ -25,7 +25,7 @@ abstract class Num2ByteFloatType(dpt: DPT) extends DPType[Float](dpt: DPT) {
     }   
 }
 
-object AIR_PRESSURE extends Num2ByteFloatType(DPTXlator2ByteFloat.DPT_AIR_PRESSURE ){
+/*object AIR_PRESSURE extends Num2ByteFloatType(DPTXlator2ByteFloat.DPT_AIR_PRESSURE ){
 	implicit def int2airp(i: Int) = new AIR_PRESSURE(i.toFloat)
 	implicit def float2airp(i: Float) = new AIR_PRESSURE(i)
-}
+}*/
