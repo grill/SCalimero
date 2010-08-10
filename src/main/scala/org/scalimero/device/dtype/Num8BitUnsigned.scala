@@ -25,6 +25,12 @@ package object num8BitUnsigned {
     implicit def int2PERCENT_U8(i : Int) = new PERCENT_U8(i)
     implicit def int2SCALING(i : Int) = new SCALING(i)
     implicit def int2VALUE_1_UCOUNT(i : Int) = new VALUE_1_UCOUNT(i)
+    
+  object ANGLE extends Num8BitUnsignedType[ANGLE](DPTXlator8BitUnsigned.ANGLE)
+  object DECIMALFACTOR extends Num8BitUnsignedType[DECIMALFACTOR](DPTXlator8BitUnsigned.DECIMALFACTOR)
+  object PERCENT_U8 extends Num8BitUnsignedType[PERCENT_U8](DPTXlator8BitUnsigned.PERCENT_U8)
+  object SCALING extends Num8BitUnsignedType[SCALING](DPTXlator8BitUnsigned.SCALING)
+  object VALUE_1_UCOUNT extends Num8BitUnsignedType[VALUE_1_UCOUNT](DPTXlator8BitUnsigned.VALUE_1_UCOUNT)
 
 
   class ANGLE(override val value : Int) extends Num8BitUnsignedValue(value) {

@@ -57,6 +57,22 @@ package object num2ByteFloat {
     implicit def float2VOLTAGE(f : Float) = new VOLTAGE(f)
     implicit def float2WIND_SPEED(f : Float) = new WIND_SPEED(f)
   }
+  
+  object AIR_PRESSURE extends Num2ByteFloatType[AIR_PRESSURE](DPTXlator2ByteFloat.AIR_PRESSURE)
+  object AIRQUALITY extends Num2ByteFloatType[AIRQUALITY](DPTXlator2ByteFloat.AIRQUALITY)
+  object ELECTRICAL_CURRENT extends Num2ByteFloatType[ELECTRICAL_CURRENT](DPTXlator2ByteFloat.ELECTRICAL_CURRENT)
+  object HUMIDITY extends Num2ByteFloatType[HUMIDITY](DPTXlator2ByteFloat.HUMIDITY)
+  object INTENSITY_OF_LIGHT extends Num2ByteFloatType[INTENSITY_OF_LIGHT](DPTXlator2ByteFloat.INTENSITY_OF_LIGHT)
+  object KELVIN_PER_PERCENT extends Num2ByteFloatType[KELVIN_PER_PERCENT](DPTXlator2ByteFloat.KELVIN_PER_PERCENT)
+  object POWER extends Num2ByteFloatType[POWER](DPTXlator2ByteFloat.POWER)
+  object POWERDENSITY extends Num2ByteFloatType[POWERDENSITY](DPTXlator2ByteFloat.POWERDENSITY)
+  object TEMPERATURE extends Num2ByteFloatType[TEMPERATURE](DPTXlator2ByteFloat.TEMPERATURE)
+  object TEMPERATURE_DIFFERENCE extends Num2ByteFloatType[TEMPERATURE_DIFFERENCE](DPTXlator2ByteFloat.TEMPERATURE_DIFFERENCE)
+  object TEMPERATURE_GRADIENT extends Num2ByteFloatType[TEMPERATURE_GRADIENT](DPTXlator2ByteFloat.TEMPERATURE_GRADIENT)
+  object TIME_DIFFERENCE1 extends Num2ByteFloatType[TIME_DIFFERENCE1](DPTXlator2ByteFloat.TIME_DIFFERENCE1)
+  object TIME_DIFFERENCE2 extends Num2ByteFloatType[TIME_DIFFERENCE2](DPTXlator2ByteFloat.TIME_DIFFERENCE2)
+  object VOLTAGE extends Num2ByteFloatType[VOLTAGE](DPTXlator2ByteFloat.VOLTAGE)
+  object WIND_SPEED extends Num2ByteFloatType[WIND_SPEED](DPTXlator2ByteFloat.WIND_SPEED)
 
   class AIR_PRESSURE(override val value: Float) extends Num2ByteFloatValue(value) {
     override val min = 0

@@ -32,6 +32,17 @@ package object num2ByteUnsigned {
     implicit def int2TIMEPERIOD_SEC(i : Int) = new TIMEPERIOD_SEC(i)
     implicit def int2VALUE_2_UCOUNT(i : Int) = new VALUE_2_UCOUNT(i)
   }
+  object BRIGHTNESS extends Num2ByteUnsignedType[BRIGHTNESS](DPTXlator2ByteUnsigned.BRIGHTNESS)
+  object ELECTRICAL_CURRENT extends Num2ByteUnsignedType[ELECTRICAL_CURRENT](DPTXlator2ByteUnsigned.ELECTRICAL_CURRENT)
+  object PROP_DATATYPE extends Num2ByteUnsignedType[PROP_DATATYPE](DPTXlator2ByteUnsigned.PROP_DATATYPE)
+  object TIMEPERIOD extends Num2ByteUnsignedType[TIMEPERIOD](DPTXlator2ByteUnsigned.TIMEPERIOD)
+  object TIMEPERIOD_10 extends Num2ByteUnsignedType[TIMEPERIOD_10](DPTXlator2ByteUnsigned.TIMEPERIOD_10)
+  object TIMEPERIOD_100 extends Num2ByteUnsignedType[TIMEPERIOD_100](DPTXlator2ByteUnsigned.TIMEPERIOD_100)
+  object TIMEPERIOD_HOURS extends Num2ByteUnsignedType[TIMEPERIOD_HOURS](DPTXlator2ByteUnsigned.TIMEPERIOD_HOURS)
+  object TIMEPERIOD_MIN extends Num2ByteUnsignedType[TIMEPERIOD_MIN](DPTXlator2ByteUnsigned.TIMEPERIOD_MIN)
+  object TIMEPERIOD_SEC extends Num2ByteUnsignedType[TIMEPERIOD_SEC](DPTXlator2ByteUnsigned.TIMEPERIOD_SEC)
+  object VALUE_2_UCOUNT extends Num2ByteUnsignedType[VALUE_2_UCOUNT](DPTXlator2ByteUnsigned.VALUE_2_UCOUNT)
+
 
   class BRIGHTNESS(override val value : Int) extends Num2ByteUnsignedValue(value) {
     override val unit = "lx"
