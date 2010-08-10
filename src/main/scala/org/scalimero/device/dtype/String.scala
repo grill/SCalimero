@@ -3,11 +3,9 @@ package org.scalimero.device.dtype
 import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.dptxlator.DPTXlator._
 
-import java.text.SimpleDateFormat
-
 //Not tested
-abstract class StringType(dpt: DPT) extends DPType[SimpleDateFormat](dpt) {
-  val dptx = new DPTXlatorString (dpt.getID)
+abstract class StringType(override val dpt: DPT) extends DPType[String](dpt) {
+  val dptx = new DPTXlatorString (dpt)
 
   def translate(value: String): String = value
   def translate (value: Array[Byte]): String = {
@@ -16,5 +14,9 @@ abstract class StringType(dpt: DPT) extends DPType[SimpleDateFormat](dpt) {
   }
 }
 
-object STRING_8859_1 extends DateType(DPTXlatorDateTime.DPT_STRING_8859_1)
-object STRING_ASCII extends DateType(DPTXlatorDateTime.DPT_STRING_ASCII)
+object String {
+  object ISO_8859_1 extends DateType(DPTXlatorString.DPT_STRING_8859_1)
+  object ASCII extends DateType(DPTXlatorString.DPT_STRING_ASCII)
+}
+
+class STRING(val value: String) extends DPValue
