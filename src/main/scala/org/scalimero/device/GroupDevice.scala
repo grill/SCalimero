@@ -5,13 +5,15 @@ import org.scalimero.dsl._
 import org.scalimero.util._
 import org.scalimero.device._
 
-class GroupDevice[T] extends TCommandDevice[T]{
+import tuwien.auto.calimero.GroupAddress
+
+class GroupDevice[T](dpt: DPType[T]) extends TCommandDevice[T] with Seq[T]{
   var proxyFun = (value: T) => value
   var reciever: StateDevice[T] = null
   
-  def this(destAddress:String, tt: TranslatorType, dpt: DPType[T], name: String = "", net: Network = Network.default){
-    this()
-    reciever = new StateDevice(destAddress, tt, dpt)
+  def this(destAddress: GroupAddress, tt: TranslatorType, dpt: DPType[T], name: String = "", net: Network = Network.default){
+    this(dpt)
+    reciever = new StateDevice(destAddress, tt, dpt, name, net)
   }
   
   def add(d: Device[T]) {

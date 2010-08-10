@@ -16,7 +16,7 @@ abstract class Num2ByteFloatValue(val value: Float) extends DPValue {
   override def toString = value.toString + " " + unit
 }
 
-abstract class Num2ByteFloatType(dpt: DPT) extends DPType[Float](dpt: DPT) {
+abstract class Num2ByteFloatType[T](dpt: DPT) extends DPType[T, Float](dpt: DPT) {
     val dptx = new DPTXlator2ByteFloat (dpt)
 	
 	def translate(value: String): Float = {
@@ -36,10 +36,8 @@ abstract class Num2ByteFloatType(dpt: DPT) extends DPType[Float](dpt: DPT) {
 }
 
 package object Num2ByteFloat {
-  /*object AIR_PRESSURE extends Num2ByteFloatType(DPTXlator2ByteFloat.DPT_AIR_PRESSURE ){
-	  implicit def int2airp(i: Int) = new AIR_PRESSURE(i.toFloat)
-	  implicit def float2airp(i: Float) = new AIR_PRESSURE(i)
-  }*/
+
+  object AIR_PRESSURE extends Num2ByteFloatType[AIR_PRESSURE](DPTXlator2ByteFloat.DPT_AIR_PRESSURE )
 
   class AIR_PRESSURE(override val value: Float) extends Num2ByteFloatValue(value) {
     override val min = 0
