@@ -19,7 +19,14 @@ abstract class Num8BitUnsignedValue(val value: Int) extends DPValue {
   }
 }
 
-package object Num8BitUnsigned {
+package object num8BitUnsigned {
+    implicit def int2ANGLE(i : Int) = new ANGLE(i)
+    implicit def int2DECIMALFACTOR(i : Int) = new DECIMALFACTOR(i)
+    implicit def int2PERCENT_U8(i : Int) = new PERCENT_U8(i)
+    implicit def int2SCALING(i : Int) = new SCALING(i)
+    implicit def int2VALUE_1_UCOUNT(i : Int) = new VALUE_1_UCOUNT(i)
+
+
   class ANGLE(override val value : Int) extends Num8BitUnsignedValue(value) {
     override val max = 360
     override val unit = "°"

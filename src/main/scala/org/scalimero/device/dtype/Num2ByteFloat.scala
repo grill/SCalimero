@@ -35,9 +35,24 @@ abstract class Num2ByteFloatType[T](dpt: DPT) extends DPType[T, Float](dpt: DPT)
     }   
 }
 
-package object Num2ByteFloat {
-
-  object AIR_PRESSURE extends Num2ByteFloatType[AIR_PRESSURE](DPTXlator2ByteFloat.DPT_AIR_PRESSURE )
+package object num2ByteFloat {
+  trait implicits {
+    implicit def float2AIR_PRESSURE(f : Float) = new AIR_PRESSURE(f)
+    implicit def float2AIRQUALITY(f : Float) = new AIRQUALITY(f)
+    implicit def float2ELECTRICAL_CURRENT(f : Float) = new ELECTRICAL_CURRENT(f)
+    implicit def float2HUMIDITY(f : Float) = new HUMIDITY(f)
+    implicit def float2INTENSITY_OF_LIGHT(f : Float) = new INTENSITY_OF_LIGHT(f)
+    implicit def float2KELVIN_PER_PERCENT(f : Float) = new KELVIN_PER_PERCENT(f)
+    implicit def float2POWER(f : Float) = new POWER(f)
+    implicit def float2POWERDENSITY(f : Float) = new POWERDENSITY(f)
+    implicit def float2TEMPERATURE(f : Float) = new TEMPERATURE(f)
+    implicit def float2TEMPERATURE_DIFFERENCE(f : Float) = new TEMPERATURE_DIFFERENCE(f)
+    implicit def float2TEMPERATURE_GRADIENT(f : Float) = new TEMPERATURE_GRADIENT(f)
+    implicit def float2TIME_DIFFERENCE1(f : Float) = new TIME_DIFFERENCE1(f)
+    implicit def float2TIME_DIFFERENCE2(f : Float) = new TIME_DIFFERENCE2(f)
+    implicit def float2VOLTAGE(f : Float) = new VOLTAGE(f)
+    implicit def float2WIND_SPEED(f : Float) = new WIND_SPEED(f)
+  }
 
   class AIR_PRESSURE(override val value: Float) extends Num2ByteFloatValue(value) {
     override val min = 0

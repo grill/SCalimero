@@ -19,7 +19,8 @@ abstract class Num4ByteUnsignedValue(val value: Long) extends DPValue {
   }
 }
 
-package object Num4ByteUnsigned {
+package object num4ByteUnsigned {
+    implicit def int2VALUE_4_UCOUNT(i : Int) = new VALUE_4_UCOUNT(i)
   class VALUE_4_UCOUNT(override val value : Long) extends Num4ByteUnsignedValue(value) {
     override val unit = "pulses"
   }
