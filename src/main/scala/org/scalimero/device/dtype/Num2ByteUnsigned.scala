@@ -19,7 +19,20 @@ abstract class Num2ByteUnsignedValue(val value: Int) extends DPValue {
   }
 }
 
-package object Num2ByteUnsigned {
+package object num2ByteUnsigned {
+  trait implicits {
+    implicit def int2BRIGHTNESS(i : Int) = new BRIGHTNESS(i)
+    implicit def int2ELECTRICAL_CURRENT(i : Int) = new ELECTRICAL_CURRENT(i)
+    implicit def int2PROP_DATATYPE(i : Int) = new PROP_DATATYPE(i)
+    implicit def int2TIMEPERIOD(i : Int) = new TIMEPERIOD(i)
+    implicit def int2TIMEPERIOD_10(i : Int) = new TIMEPERIOD_10(i)
+    implicit def int2TIMEPERIOD_100(i : Int) = new TIMEPERIOD_100(i)
+    implicit def int2TIMEPERIOD_HOURS(i : Int) = new TIMEPERIOD_HOURS(i)
+    implicit def int2TIMEPERIOD_MIN(i : Int) = new TIMEPERIOD_MIN(i)
+    implicit def int2TIMEPERIOD_SEC(i : Int) = new TIMEPERIOD_SEC(i)
+    implicit def int2VALUE_2_UCOUNT(i : Int) = new VALUE_2_UCOUNT(i)
+  }
+
   class BRIGHTNESS(override val value : Int) extends Num2ByteUnsignedValue(value) {
     override val unit = "lx"
   }
