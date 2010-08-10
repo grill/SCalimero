@@ -4,10 +4,10 @@ import org.scalimero.device.dtype._
 
 import tuwien.auto.calimero.dptxlator._
 
-abstract class DPType[DataPointType, PrimitveType](val dpt: DPT) {
+abstract class DPType[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType](val dpt: DPT) {
   def id = dpt.getID()
-  def translate(value: String): T
-  def translate(value: T): String
+  def translate(value: String): PrimitiveType
+  def translate(value: PrimitiveType): String
   def translate(value: Array[Byte]): String
 }
 /*
@@ -15,8 +15,8 @@ object DPType{
   implicit def dpt2dptype(dpt: DPT) = new DPType(DPT)
 }*/
 
-class DPValue[T] {
-  val value: T
+class DPValue[PrimitiveType] {
+  val value: PrimitiveType
 }
 
 class OutOfBoundsException(value: String, min: String, max: String) extends Exception("The value = " + value +

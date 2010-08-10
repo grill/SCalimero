@@ -65,6 +65,12 @@ abstract class TimeType(override val dpt: DPT) extends DPType[DateTime.TIME, Dat
 }
 
 package object DateTime{
+  trait implicits {
+    implicit def sdf2DATETIME(sdf : SimpleDateFormat) = new DATETIME(sdf)
+    implicit def sdf2DATE(sdf : SimpleDateFormat) = new DATE(sdf)
+    implicit def sdf2TIME(sdf : SimpleDateFormat) = new TIME(sdf)
+  }
+
   object DATETIME extends DateTimeType(DPTXlatorDateTime.DPT_DATE_TIME)
   class DATETIME(val value: SimpleDateFormat) extends DPValue
   

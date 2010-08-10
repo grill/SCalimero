@@ -19,6 +19,25 @@ abstract class Num2ByteUnsignedValue(val value: Int) extends DPValue {
   }
 }
 
+abstract class Num2ByteUnsignedType[T](dpt: DPT) extends DPType[T, Int](dpt: DPT) {
+    val dptx = new DPTXlator2ByteUnsigned (dpt)
+	
+	def translate(value: String): Int = {
+      dptx.setValue(value)
+      dptx.getValueUnsigned
+	}
+	
+	def translate(value: Int): String = {
+      dptx.setValue(value) 
+      dptx.getValue
+	}
+	
+    def translate (value: Array[Byte]): String = {
+		dptx.setData(value)
+		dptx.getValue
+    }   
+}
+
 package object num2ByteUnsigned {
   trait implicits {
     implicit def int2BRIGHTNESS(i : Int) = new BRIGHTNESS(i)
@@ -32,6 +51,19 @@ package object num2ByteUnsigned {
     implicit def int2TIMEPERIOD_SEC(i : Int) = new TIMEPERIOD_SEC(i)
     implicit def int2VALUE_2_UCOUNT(i : Int) = new VALUE_2_UCOUNT(i)
   }
+  
+  object BRIGHTNESS extends Num2ByteUnsignedType[BRIGHTNESS](DPTXlator2ByteUnsigned.DPT_BRIGHTNESS)
+  object ELECTRICAL_CURRENT extends Num2ByteUnsignedType[ELECTRICAL_CURRENT](DPTXlator2ByteUnsigned.DPT_ELECTRICAL_CURRENT)
+  object PROP_DATATYPE extends Num2ByteUnsignedType[PROP_DATATYPE](DPTXlator2ByteUnsigned.DPT_PROP_DATATYPE)
+  object TIMEPERIOD extends Num2ByteUnsignedType[TIMEPERIOD](DPTXlator2ByteUnsigned.DPT_TIMEPERIOD)
+  object TIMEPERIOD_10 extends Num2ByteUnsignedType[TIMEPERIOD_10](DPTXlator2ByteUnsigned.DPT_TIMEPERIOD_10)
+  object TIMEPERIOD_100 extends Num2ByteUnsignedType[TIMEPERIOD_100](DPTXlator2ByteUnsigned.DPT_TIMEPERIOD_100)
+  object TIMEPERIOD_HOURS extends Num2ByteUnsignedType[TIMEPERIOD_HOURS](DPTXlator2ByteUnsigned.DPT_TIMEPERIOD_HOURS)
+  object TIMEPERIOD_MIN extends Num2ByteUnsignedType[TIMEPERIOD_MIN](DPTXlator2ByteUnsigned.DPT_TIMEPERIOD_MIN)
+  object TIMEPERIOD_SEC extends Num2ByteUnsignedType[TIMEPERIOD_SEC](DPTXlator2ByteUnsigned.DPT_TIMEPERIOD_SEC)
+  object VALUE_2_UCOUNT extends Num2ByteUnsignedType[VALUE_2_UCOUNT](DPTXlator2ByteUnsigned.DPT_VALUE_2_UCOUNT)
+
+
 
   class BRIGHTNESS(override val value : Int) extends Num2ByteUnsignedValue(value) {
     override val unit = "lx"
