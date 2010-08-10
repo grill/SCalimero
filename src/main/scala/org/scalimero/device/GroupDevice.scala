@@ -5,27 +5,27 @@ import org.scalimero.dsl._
 import org.scalimero.util._
 import org.scalimero.device._
 
+import scala.collection.mutable._
+
 import tuwien.auto.calimero.GroupAddress
 
-class GroupDevice[T](dpt: DPType[T]) extends TCommandDevice[T] with Seq[T]{
-  var proxyFun = (value: T) => value
-  var reciever: StateDevice[T] = null
+class GroupDevice[DataPointValueType, PrimitveType](dpt: DPType[DataPointValueType, PrimitveType]) 
+  extends TCommandDevice[T] with HashSet[Device[DataPointValueType, PrimitveType]]{
+  var proxyFun = (value: PrimitveType) => value
+  var master: StateDevice[DataPointType, PrimitveType] = null
   
   def this(destAddress: GroupAddress, tt: TranslatorType, dpt: DPType[T], name: String = "", net: Network = Network.default){
     this(dpt)
-    reciever = new StateDevice(destAddress, tt, dpt, name, net)
+    master = new StateDevice(destAddress, tt, dpt, name, net)
+    master subscribe (value: T) => {
+      val pvalue = proxyFun(value.value)
+      this map {_ send value}
+    }
   }
-  
-  def add(d: Device[T]) {
-    ;
-  }
-  
-  def add(d: Device[T], fun: (T) => T){
-    ;
-  }
-  
-  def send(value: T) = {
-    ;
+
+  def send(value: DataPointValueType) = {
+    val pvalue = proxyFun(value.value)
+    this map {_ send pvalue}
   }
   
   //This Function is called right before forwarding to all
