@@ -39,12 +39,14 @@ abstract class Num8BitUnsignedType[T](dpt: DPT) extends DPType[T, Int](dpt: DPT)
 }
 
 package object num8BitUnsigned {
+  trait implicits {
     implicit def int2ANGLE(i : Int) = new ANGLE(i)
     implicit def int2DECIMALFACTOR(i : Int) = new DECIMALFACTOR(i)
     implicit def int2PERCENT_U8(i : Int) = new PERCENT_U8(i)
     implicit def int2SCALING(i : Int) = new SCALING(i)
     implicit def int2VALUE_1_UCOUNT(i : Int) = new VALUE_1_UCOUNT(i)
-    
+  }
+  
   object ANGLE extends Num8BitUnsignedType[ANGLE](DPTXlator8BitUnsigned.DPT_ANGLE)
   object DECIMALFACTOR extends Num8BitUnsignedType[DECIMALFACTOR](DPTXlator8BitUnsigned.DPT_DECIMALFACTOR)
   object PERCENT_U8 extends Num8BitUnsignedType[PERCENT_U8](DPTXlator8BitUnsigned.DPT_PERCENT_U8)
