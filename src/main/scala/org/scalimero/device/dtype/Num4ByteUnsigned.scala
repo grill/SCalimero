@@ -39,7 +39,9 @@ abstract class Num4ByteUnsignedType[T](dpt: DPT) extends DPType[T, Long](dpt: DP
 }
 
 package object num4ByteUnsigned {
-  implicit def int2VALUE_4_UCOUNT(i : Int) = new VALUE_4_UCOUNT(i)
+  trait implicits {
+    implicit def int2VALUE_4_UCOUNT(i : Int) = new VALUE_4_UCOUNT(i)
+  }
   object VALUE_4_UCOUNT extends Num4ByteUnsignedType[VALUE_4_UCOUNT](DPTXlator4ByteUnsigned.DPT_VALUE_4_UCOUNT)
 
   class VALUE_4_UCOUNT(override val value : Long) extends Num4ByteUnsignedValue(value) {
