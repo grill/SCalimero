@@ -1,4 +1,4 @@
-package org.scalimero.device.dvalue
+package org.scalimero.device.dtype
 
 import org.scalimero.device.dtype._
 
