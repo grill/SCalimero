@@ -19,7 +19,7 @@ abstract class Num8BitUnsignedValue(val value: Int) extends DPValue {
   }
 }
 
-object Num8BitUnsigned {
+package object Num8BitUnsigned {
   class ANGLE(override val value : Int) extends Num8BitUnsignedValue(value) {
     override val max = 360
     override val unit = "°"

@@ -19,7 +19,7 @@ abstract class Num2ByteUnsignedValue(val value: Int) extends DPValue {
   }
 }
 
-object Num2ByteUnsigned {
+package object Num2ByteUnsigned {
   class BRIGHTNESS(override val value : Int) extends Num2ByteUnsignedValue(value) {
     override val unit = "lx"
   }
