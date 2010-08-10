@@ -12,7 +12,7 @@ object Lamp {
 }
 
 class Lamp(address: GroupAddress) extends StateDevice(address, BOOLEAN, SWITCH){
-  def turn(value: Boolean) = send(value)
+  def turn(value: BooleanValue) = send(value)
 
   override val events : Map[Any, Boolean => Boolean] = Map (
     on ->   {(b: Boolean) => b},

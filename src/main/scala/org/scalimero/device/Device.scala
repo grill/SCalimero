@@ -23,7 +23,7 @@ trait TStateDevice[T] extends TDevice {
   def read(): T
 }
 
-abstract class Device[DataPointType, PrimitveType](destAddr: GroupAddress, tt: TranslatorType, dpt: DPType[DataPointType, PrimitveType], name: String, net: Network)
+abstract class Device[DataPointValueType <: DPValue[PrimitveType], PrimitveType](destAddr: GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitveType], name: String, net: Network)
   extends Actor with EventHelper[PrimitveType] with WriteCallbackHelper[PrimitveType]{
 
   val dp: Datapoint
@@ -32,7 +32,7 @@ abstract class Device[DataPointType, PrimitveType](destAddr: GroupAddress, tt: T
   net.subscribe(this, List(destAddr))
   
   def detach() = net.unsubscribe(this)
-  def send(value: DataPointType) = net.send(dp, dpt.translate(value.value))
+  def send(dpvalue: DataPointValueType) = net.send(dp, dpt.translate(dpvalue.value))
 
   override def act() {
     loop{
@@ -79,17 +79,17 @@ abstract class Device[DataPointType, PrimitveType](destAddr: GroupAddress, tt: T
 }
 
 object Device {
-  def apply[DataPointType, PrimitveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointType, PrimitveType], name: String = "", net: Network = Network.default) =
+  def apply[DataPointValueType, PrimitveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitveType], name: String = "", net: Network = Network.default) =
     new StateDevice(destAddress, tt, dpt, name, net)
 }
 
-class CommandDevice[DataPointType, PrimitveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointType, PrimitveType], name: String = "", net: Network = Network.default) 
+class CommandDevice[DataPointValueType, PrimitveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitveType], name: String = "", net: Network = Network.default) 
   extends Device(destAddress, tt, dpt, name, net){
   override val dp = new CommandDP(destAddress, name, tt.mainNumber, dpt.id)
   
 }
 
-class StateDevice[DataPointType, PrimitveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointType, PrimitveType], name: String = "", net: Network = Network.default) 
+class StateDevice[DataPointValueType, PrimitveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitveType], name: String = "", net: Network = Network.default) 
   extends Device(destAddress, tt, dpt, name, net){
   override val dp = new StateDP(destAddress, name, tt.mainNumber, dpt.id)
 
