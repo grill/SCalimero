@@ -25,9 +25,27 @@ abstract class BooleanType(dpt: DPT) extends DPType[BooleanValue, Boolean](dpt) 
 package object boolean{
   object ACK extends BooleanType(DPTXlatorBoolean.DPT_ACK )
   object ALARM extends BooleanType(DPTXlatorBoolean.DPT_ALARM )
-  object SWITCH extends BooleanType(DPTXlatorBoolean.DPT_SWITCH )
   object BINARYVALUE extends BooleanType(DPTXlatorBoolean.DPT_BINARYVALUE )
   object BOOL extends BooleanType(DPTXlatorBoolean.DPT_BOOL )
+  object DIMSENDSTYLE extends BooleanType(DPTXlatorBoolean.DPT_DIMSENDSTYLE)
+  object ENABLE extends BooleanType(DPTXlatorBoolean.DPT_ENABLE)
+  object INPUTSOURCE  extends BooleanType(DPTXlatorBoolean.DPT_INPUTSOURCE)
+  object INVERT extends BooleanType(DPTXlatorBoolean.DPT_INVERT)
+  object LOGICAL_FUNTCION extends BooleanType(DPTXlatorBoolean.DPT_LOGICAL_FUNCTION)
+  object OCCUPANCY extends BooleanType(DPTXlatorBoolean.DPT_OCCUPANCY)
+  object OPENCLOSE extends BooleanType(DPTXlatorBoolean.DPT_OPENCLOSE)
+  object RAMP extends BooleanType(DPTXlatorBoolean.DPT_RAMP)
+  object RESET extends BooleanType(DPTXlatorBoolean.DPT_RESET)
+  object SCENE_AB extends BooleanType(DPTXlatorBoolean.DPT_SCENE_AB)
+  object SHUTTER_BLINDS_MODE extends BooleanType(DPTXlatorBoolean.DPT_SHUTTER_BLINDS_MODE)
+  object START extends BooleanType(DPTXlatorBoolean.DPT_START)
+  object STATE extends BooleanType(DPTXlatorBoolean.DPT_STATE)
+  object STEP extends BooleanType(DPTXlatorBoolean.DPT_STEP)
+  object SWITCH extends BooleanType(DPTXlatorBoolean.DPT_SWITCH)
+  object TRIGGER extends BooleanType(DPTXlatorBoolean.DPT_TRIGGER)
+  object UPDOWN extends BooleanType(DPTXlatorBoolean.DPT_UPDOWN)
+  object WINDOW_DOOR extends BooleanType(DPTXlatorBoolean.DPT_WINDOW_DOOR)
+
 }
 
 abstract class BooleanValue extends DPValue[Boolean]
