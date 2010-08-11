@@ -90,7 +90,7 @@ object not_inverted extends False
 object inverted extends True
 
 //DIMSENDSTYLE
-object start/stop extends False
+object start_stop extends False
 object cyclic extends True
 
 //INPUTSOURCE
@@ -110,24 +110,20 @@ object not_occupied extends False
 object occupied extends True
 
 //WINDOW_DOOR
-object closed extends False
-object open extends True
+object w_closed extends False
+object w_open extends True
 
 //LOGICAL_FUNCTION
 object OR extends False
 object AND extends True
 
 //SCENE_AB
-object scene_B extends False
+object scene_A extends False
 object scene_B extends True
 
 //SHUTTER_BLINDS_MODE
-object only_move_up/down extends False
-object move_up/down_+_step-stop extends True
-
-//SWITCH
-object off extends False
-object on extends True
+object only_move_up_down extends False
+object move_up_down_and_step_stop extends True
 
 //BOOL
 /**
