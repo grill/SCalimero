@@ -33,7 +33,7 @@ abstract class Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveTyp
   
   def detach() = net.unsubscribe(this)
   def send(dpvalue: DataPointValueType) = net.send(dp, dpt.translate(dpvalue.value))
-  def write(pvalue: PrimitiveType) = net.send(dp, dpt.translate(pvalue))
+  private[device] def write(pvalue: PrimitiveType) = net.send(dp, dpt.translate(pvalue))
 
   override def act() {
     loop{

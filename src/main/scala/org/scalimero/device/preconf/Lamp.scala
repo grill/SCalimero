@@ -3,7 +3,6 @@ package org.scalimero.device.preconf
 import org.scalimero.device._
 import org.scalimero.device.dtype._
 import org.scalimero.device.dtype.boolean._
-import org.scalimero.device.dvalue._
 
 import tuwien.auto.calimero.GroupAddress
 
