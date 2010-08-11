@@ -25,11 +25,11 @@ class EventHelperSpec extends Spec with ShouldMatchers {
       var worldCalled = false
       
       it ("should allow subscriptions to the \"world\" event") {
-        eh.subscribe("world"){worldCalled = true}
+        eh.eventSubscribe("world"){worldCalled = true}
       }
       
       it ("should not allow subscriptions to the \"foo\" event") {
-        evaluating {eh.subscribe("foo"){1+1}} should produce [NoSuchEventException]
+        evaluating {eh.eventSubscribe("foo"){1+1}} should produce [NoSuchEventException]
       }
       
       it ("should call back properly") {
@@ -46,7 +46,7 @@ class EventHelperSpec extends Spec with ShouldMatchers {
         }
       
       var worldCalled = 0
-      var callback = eh.subscribe("world"){worldCalled += 1}
+      var callback = eh.eventSubscribe("world"){worldCalled += 1}
       
       it ("should call back properly") {
         eh callEvents "hello"
@@ -66,14 +66,14 @@ class EventHelperSpec extends Spec with ShouldMatchers {
       
       it ("should allow callback unsubscription") {
         worldCalled = 0
-        eh unsubscribe callback
+        eh eventUnsubscribe callback
         eh callEvents "hello"
         worldCalled should be (0)
       }
       
       it ("should allow callbacks to unsubscribe themselves") {
         worldCalled = 0
-        callback = eh.subscribe("world"){worldCalled += 1}
+        callback = eh.eventSubscribe("world"){worldCalled += 1}
         callback.detach
         eh callEvents "hello"
         worldCalled should be (0)
@@ -98,12 +98,12 @@ class EventHelperSpec extends Spec with ShouldMatchers {
         var g10 = false
         var s10 = false
         var s = false
-        eh.subscribe(">=10"){ge10 = true}
-        val cb = eh.subscribe(">=10"){ge102 = true}
-        eh.subscribe("=10"){e10 = true}
-        eh.subscribe(">10"){g10 = true}
-        eh.subscribe("<10"){s10 = true}
-        eh.subscribe("<"){s = true}
+        eh.eventSubscribe(">=10"){ge10 = true}
+        val cb = eh.eventSubscribe(">=10"){ge102 = true}
+        eh.eventSubscribe("=10"){e10 = true}
+        eh.eventSubscribe(">10"){g10 = true}
+        eh.eventSubscribe("<10"){s10 = true}
+        eh.eventSubscribe("<"){s = true}
         
         eh callEvents 15
         
