@@ -5,7 +5,7 @@ import org.scalimero.device.dtype._
 import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.dptxlator.DPTXlator._
 
-abstract class Num3BitControlledValue(val value: Int) extends DPValue {
+abstract class Num3BitControlledValue(override val value: Int) extends DPValue {
   val unit : String = ""
   val min = -7
   val max = 7

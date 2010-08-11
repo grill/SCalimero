@@ -5,7 +5,7 @@ import org.scalimero.device.dtype._
 import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.dptxlator.DPTXlator._
 
-abstract class Num2ByteFloatValue(val value: Float) extends DPValue {
+abstract class Num2ByteFloatValue(override val value: Float) extends DPValue {
   val unit : String = ""
   val min = -670760
   val max = 670760

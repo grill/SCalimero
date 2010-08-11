@@ -5,7 +5,7 @@ import org.scalimero.device.dtype._
 import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.dptxlator.DPTXlator._
 
-abstract class Num4ByteUnsignedValue(val value: Long) extends DPValue {
+abstract class Num4ByteUnsignedValue(override val value: Long) extends DPValue {
   val unit : String = ""
   val min = 0L
   val max = 4294967295L
