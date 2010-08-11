@@ -6,6 +6,7 @@ import scala.collection.mutable.Stack
 
 import org.scalimero.device._
 import org.scalimero.device.dtype._
+import dtype.boolean._
 import org.scalimero.dsl._
 
 class DeviceSpec extends Spec with ShouldMatchers {

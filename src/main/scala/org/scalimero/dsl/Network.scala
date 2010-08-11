@@ -12,8 +12,8 @@ object Network {
   var default : Network = null
   var defaultMedium = TPSettings.TP1
   
-  def apply(router : String) = {
-    default = new Network(router)
+  def apply(router : String, medium : KNXMediumSettings = defaultMedium) = {
+    default = new Network(router, medium)
     default
   }
   
@@ -21,8 +21,7 @@ object Network {
   def close = default.close
 }
 
-class Network(var router : String) {
-  var medium = Network.defaultMedium
+class Network(var router : String, var medium : KNXMediumSettings = Network.defaultMedium) {
   var nl : KNXNetworkLink = null
   var opened = false
   var pc : ProcessCommunicator = null
