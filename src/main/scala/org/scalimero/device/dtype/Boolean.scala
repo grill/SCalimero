@@ -57,83 +57,81 @@ object on extends True
 object low extends False
 object high extends True
 
+//ENABLE
+object disable extends False
+object enable extends True
+
+//RAMP
+object no_ramp extends False
+object ramp extends True
+
+//STEP
+object decrease extends False
+object increase extends True
+
+//UPDOWN
+object up extends False
+object down extends True
+
+//OPENCLOSE
+object open extends False
+object close extends True
+
+//START
+object stop extends False
+object start extends True
+
+//STATE
+object inactive extends False
+object active extends True
+
+//INVERT
+object not_inverted extends False
+object inverted extends True
+
+//DIMSENDSTYLE
+object start/stop extends False
+object cyclic extends True
+
+//INPUTSOURCE
+object fixed extends False
+object calculated extends True
+
+//RESET
+//object no_action extends False
+object reset extends True
+
+//TRIGGER
+//object trigger extends False
+object trigger extends True
+
+//OCCUPANCY
+object not_occupied extends False
+object occupied extends True
+
+//WINDOW_DOOR
+object closed extends False
+object open extends True
+
+//LOGICAL_FUNCTION
+object OR extends False
+object AND extends True
+
+//SCENE_AB
+object scene_B extends False
+object scene_B extends True
+
+//SHUTTER_BLINDS_MODE
+object only_move_up/down extends False
+object move_up/down_+_step-stop extends True
+
+//SWITCH
+object off extends False
+object on extends True
+
 //BOOL
 /**
  *  primitive types are used in this case
  **/
 
-/** We need help, because we don't know which state has which value 
- *
-//DIMSENDSTYLE
-object start/stop extends False
-object cyclic extends True
 
-//ENABLE
-object disable extends False
-object enable extends True
-
-//INPUTSOURCE
-object fixed extends False
-object calculated extends True
-          DPT ID 1.014, Input source; values fixed, calculated.
-//INVERT
-object not_inverted extends False
-object inverted extends True
-          DPT ID 1.012, Invert; values not inverted, inverted.
-//LOGICAL_FUNCTION
-object off extends False
-object on extends True
-          DPT ID 1.021, Logical function; values OR, AND.
-//OCCUPANCY
-object off extends False
-object on extends True
-          DPT ID 1.018, Occupancy; values not occupied, occupied.
-//OPENCLOSE
-object off extends False
-object on extends True
-          DPT ID 1.009, Open/Close; values open, close.
-//RAMP
-object off extends False
-object on extends True
-          DPT ID 1.004, Ramp; values no ramp, ramp.
-//RESET
-object off extends False
-object on extends True
-          DPT ID 1.015, Reset; values no action (dummy), reset (trigger).
-//SCENE_AB
-object off extends False
-object on extends True
-          DPT ID 1.022, Scene A/B; values scene A, scene B.
-//SHUTTER_BLINDS_MODE
-object off extends False
-object on extends True
-          DPT ID 1.023, Shutter/Blinds mode; values only move up/down mode (shutter), move up/down + step-stop mode (blind).
-//START
-object off extends False
-object on extends True
-          DPT ID 1.010, Start; values stop, start.
-//STATE
-object off extends False
-object on extends True
-          DPT ID 1.011, State; values inactive, active.
-//STEP
-object off extends False
-object on extends True
-          DPT ID 1.007, Step; values decrease, increase.
-//SWITCH
-object off extends False
-object on extends True
-          DPT ID 1.001, Switch; values off, on.
-//TRIGGER
-object off extends False
-object on extends True
-          DPT ID 1.017, Trigger; values trigger, trigger.
-//UPDOWN
-object off extends False
-object on extends True
-          DPT ID 1.008, Up/Down; values up, down.
-//WINDOW_DOOR
-object off extends False
-object on extends True
-          DPT ID 1.019, Window/Door; values closed, open.
-*/
