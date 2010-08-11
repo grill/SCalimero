@@ -35,11 +35,11 @@ abstract class BooleanValue extends DPValue[Boolean]
 class False extends BooleanValue{
   override val value = false
 }
-object False
+object False extends False
 class True extends BooleanValue {
   override val value = true
 }
-object True
+object True extends True
 
 //ACK
 object no_action extends False

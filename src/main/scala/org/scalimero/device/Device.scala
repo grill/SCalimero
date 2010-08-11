@@ -33,6 +33,7 @@ abstract class Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveTyp
   
   def detach() = net.unsubscribe(this)
   def send(dpvalue: DataPointValueType) = net.send(dp, dpt.translate(dpvalue.value))
+  def write(pvalue: PrimitiveType) = net.send(dp, dpt.translate(pvalue))
 
   override def act() {
     loop{
@@ -51,23 +52,23 @@ abstract class Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveTyp
     }
   }
 
-  override def subscribe(event: Any) (callback: => Unit) = {
+  override def eventSubscribe(event: Any) (callback: => Unit) = {
     this !? Subscribe(event, callback _) match {
       case e: EventCallback => e
       case _ => throw new Exception("This happens all the time(hahaha)!")
     }
   }
-  override def unsubscribe(callback: EventCallback) {
+  override def eventUnsubscribe(callback: EventCallback) {
     this ! UnSubscribe(callback)
   }
 
-  override def subscribe(callback : PrimitiveType => Unit) = {
+  override def writeSubscribe(callback : PrimitiveType => Unit) = {
     this !? WSubscribe(callback) match {
       case w: WriteCallback => w
       case _ => throw new Exception("This happens all the time(hahaha)!")
     }
   }
-  override def unsubscribe(callback: WriteCallback) {
+  override def writeUnsubscribe(callback: WriteCallback) {
     this ! WUnsubscribe(callback)
   }
 
