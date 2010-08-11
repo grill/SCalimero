@@ -5,7 +5,7 @@ import org.scalimero.device.dtype._
 import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.dptxlator.DPTXlator._
 
-abstract class Num2ByteUnsignedValue(override val value: Int) extends DPValue {
+abstract class Num2ByteUnsignedValue(override val value: Int) extends DPValue[Int] {
   val unit : String = ""
   val min = 0
   val max = 65536
@@ -19,7 +19,7 @@ abstract class Num2ByteUnsignedValue(override val value: Int) extends DPValue {
   }
 }
 
-abstract class Num2ByteUnsignedType[T](dpt: DPT) extends DPType[T, Int](dpt: DPT) {
+abstract class Num2ByteUnsignedType[T <: DPValue[Int]](dpt: DPT) extends DPType[T, Int](dpt: DPT) {
     val dptx = new DPTXlator2ByteUnsigned (dpt)
 	
 	def translate(value: String): Int = {

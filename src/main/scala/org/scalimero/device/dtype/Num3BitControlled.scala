@@ -5,7 +5,7 @@ import org.scalimero.device.dtype._
 import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.dptxlator.DPTXlator._
 
-abstract class Num3BitControlledValue(override val value: Int) extends DPValue {
+abstract class Num3BitControlledValue(override val value: Int) extends DPValue[Int] {
   val unit : String = ""
   val min = -7
   val max = 7
@@ -19,7 +19,7 @@ abstract class Num3BitControlledValue(override val value: Int) extends DPValue {
   }
 }
 
-abstract class Num3BitControlledType[T](dpt: DPT) extends DPType[T, Int](dpt: DPT) {
+abstract class Num3BitControlledType[T <: DPValue[Int]](dpt: DPT) extends DPType[T, Int](dpt: DPT) {
   val dptx = new DPTXlator3BitControlled(dpt)
 	
 	def translate(value: String): Int = {

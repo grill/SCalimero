@@ -43,10 +43,10 @@ abstract class Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveTyp
           callEvents(value)
           callWrites(value)
         }
-        case Subscribe(event, callback) => reply { super.subscribe(event)(callback) }
-        case UnSubscribe(callback) => super.unsubscribe(callback)
-        case WSubscribe(callback) => reply { super.subscribe(callback) }
-        case WUnsubscribe(callback) => super.unsubscribe(callback)
+        case Subscribe(event, callback) => reply { super.eventSubscribe(event)(callback) }
+        case UnSubscribe(callback) => super.eventUnsubscribe(callback)
+        case WSubscribe(callback) => reply { super.writeSubscribe(callback) }
+        case WUnsubscribe(callback) => super.writeUnsubscribe(callback)
         case _ => println("A message has arrived Sir!")
       }
     }

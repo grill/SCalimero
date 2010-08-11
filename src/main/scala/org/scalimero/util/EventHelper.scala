@@ -6,7 +6,7 @@ trait EventHelper[T] {
   class EventCallback(var fun : () => Unit) {
     def apply() = fun()
     def update(newFun : => Unit) = fun = newFun _
-    def detach {unsubscribe(this)}
+    def detach {eventUnsubscribe(this)}
   }
 
   val events : Map[Any, T => Boolean] = Map()
@@ -15,7 +15,7 @@ trait EventHelper[T] {
   def eventList(in : T) =
     events filter {_._2(in)} map {_._1}
   
-  def subscribe(event : Any)(callback : => Unit) = {
+  def eventSubscribe(event : Any)(callback : => Unit) = {
     if (events forall {_._1 != event})
       throw new NoSuchEventException("No event " + event)
     
@@ -24,7 +24,7 @@ trait EventHelper[T] {
     ecallback
   }
   
-  def unsubscribe(callback : EventCallback) = {
+  def eventUnsubscribe(callback : EventCallback) = {
     callbacks = callbacks map ((e) => (e._1, e._2 filterNot (_==callback)))
   }
   

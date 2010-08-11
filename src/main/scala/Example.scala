@@ -19,7 +19,7 @@ lA turn on
 lA turn off
 
 //subscribe to lamp A's on event, i.e. lB gets turned on whenever lA is turned on
-lA.subscribe(on){
+lA.eventSubscribe(on){
   lB turn on
 }
 
