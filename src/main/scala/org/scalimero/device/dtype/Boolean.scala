@@ -3,7 +3,7 @@ package org.scalimero.device.dtype
 import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.dptxlator.DPTXlator._
 
-abstract class BooleanType(dpt: DPT) extends DPType[BooleanType, Boolean](dpt) {
+abstract class BooleanType(dpt: DPT) extends DPType[BooleanValue, Boolean](dpt) {
   val dptx = new DPTXlatorBoolean (dpt.getID)
 
   def translate(value: String): Boolean = {
@@ -22,7 +22,7 @@ abstract class BooleanType(dpt: DPT) extends DPType[BooleanType, Boolean](dpt) {
   }
 }
 
-package object Boolean{
+package object boolean{
   object ACK extends BooleanType(DPTXlatorBoolean.DPT_ACK )
   object ALARM extends BooleanType(DPTXlatorBoolean.DPT_ALARM )
   object SWITCH extends BooleanType(DPTXlatorBoolean.DPT_SWITCH )
@@ -30,7 +30,7 @@ package object Boolean{
   object BOOL extends BooleanType(DPTXlatorBoolean.DPT_BOOL )
 }
 
-abstract class BooleanValue extends DPValue
+abstract class BooleanValue extends DPValue[Boolean]
 
 class False extends BooleanValue{
   override val value = false
