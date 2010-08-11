@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 //Not tested
-abstract class DateTimeType(override val dpt: DPT) extends DPType[dateTime.DATETIME, Date](dpt) {
+abstract class DateTimeType(override val dpt: DPT) extends DPType[DATETIME, Date](dpt) {
   val dptx = new DPTXlatorDateTime (dpt)
 
   def translate(value: String): Date = {
@@ -26,7 +26,7 @@ abstract class DateTimeType(override val dpt: DPT) extends DPType[dateTime.DATET
   }
 }
 
-abstract class DateType(override val dpt: DPT) extends DPType[dateTime.DATE, Date](dpt) {
+abstract class DateType(override val dpt: DPT) extends DPType[DATE, Date](dpt) {
   val dptx = new DPTXlatorDate (dpt)
 
   def translate(value: String): Date = {
@@ -45,7 +45,7 @@ abstract class DateType(override val dpt: DPT) extends DPType[dateTime.DATE, Dat
   }
 }
 
-abstract class TimeType(override val dpt: DPT) extends DPType[dateTime.TIME, Date](dpt) {
+abstract class TimeType(override val dpt: DPT) extends DPType[TIME, Date](dpt) {
   val dptx = new DPTXlatorTime (dpt)
 
   def translate(value: String): Date = {
@@ -64,19 +64,21 @@ abstract class TimeType(override val dpt: DPT) extends DPType[dateTime.TIME, Dat
   }
 }
 
+class DATETIME(override val value: Date) extends DPValue[Date]
+class DATE(override val value: Date) extends DPValue[Date]
+class TIME(override val value: Date) extends DPValue[Date]
+
 package object dateTime{
+
   trait implicits {
-    implicit def sdf2DATETIME(sdf : SimpleDateFormat) = new DATETIME(sdf)
-    implicit def sdf2DATE(sdf : SimpleDateFormat) = new DATE(sdf)
-    implicit def sdf2TIME(sdf : SimpleDateFormat) = new TIME(sdf)
+    implicit def sdf2DATETIME(date : Date) = new DATETIME(date)
+    implicit def sdf2DATE(date : Date) = new DATE(date)
+    implicit def sdf2TIME(date : Date) = new TIME(date)
   }
 
   object DATETIME extends DateTimeType(DPTXlatorDateTime.DPT_DATE_TIME)
-  class DATETIME(val value: SimpleDateFormat) extends DPValue
   
   object DATE extends DateType(DPTXlatorDate.DPT_DATE )
-  class DATE(val value: SimpleDateFormat) extends DPValue
 
   object TIME extends TimeType(DPTXlatorTime.DPT_TIMEOFDAY)
-  class TIME(val value: SimpleDateFormat) extends DPValue
 }

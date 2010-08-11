@@ -5,34 +5,34 @@ import org.scalimero.device.dtype._
 import tuwien.auto.calimero.dptxlator._
 import tuwien.auto.calimero.dptxlator.DPTXlator._
 
-abstract class Num2ByteFloatValue(override val value: Float) extends DPValue {
+abstract class Num2ByteFloatValue(override val value: Float) extends DPValue[Float] {
   val unit : String = ""
   val min = -670760
   val max = 670760
-  
+
   if(value < min || value > max)
-		throw new OutOfBoundsException(value.toString, min.toString + " " + unit, max.toString + " " + unit)
-  
+    throw new OutOfBoundsException(value.toString, min.toString + " " + unit, max.toString + " " + unit)
+
   override def toString = value.toString + " " + unit
 }
 
-abstract class Num2ByteFloatType[T](dpt: DPT) extends DPType[T, Float](dpt: DPT) {
+abstract class Num2ByteFloatType[T <: DPValue[Float]](dpt: DPT) extends DPType[T, Float](dpt: DPT) {
     val dptx = new DPTXlator2ByteFloat (dpt)
-	
-	def translate(value: String): Float = {
+
+  def translate(value: String): Float = {
       dptx.setValue(value)
       dptx.getValueFloat
-	}
-	
-	def translate(value: Float): String = {
-      dptx.setValue(value) 
+  }
+
+  def translate(value: Float): String = {
+      dptx.setValue(value)
       dptx.getValue
-	}
-	
-    def translate (value: Array[Byte]): String = {
-		dptx.setData(value)
-		dptx.getValue
-    }   
+  }
+
+  def translate (value: Array[Byte]): String = {
+    dptx.setData(value)
+    dptx.getValue
+  }
 }
 
 package object num2ByteFloat {
@@ -53,7 +53,7 @@ package object num2ByteFloat {
     implicit def float2VOLTAGE(f : Float) = new VOLTAGE(f)
     implicit def float2WIND_SPEED(f : Float) = new WIND_SPEED(f)
   }
-  
+
   object AIR_PRESSURE extends Num2ByteFloatType[AIR_PRESSURE](DPTXlator2ByteFloat.DPT_AIR_PRESSURE)
   object AIRQUALITY extends Num2ByteFloatType[AIRQUALITY](DPTXlator2ByteFloat.DPT_AIRQUALITY)
   object ELECTRICAL_CURRENT extends Num2ByteFloatType[ELECTRICAL_CURRENT](DPTXlator2ByteFloat.DPT_ELECTRICAL_CURRENT)
@@ -73,69 +73,68 @@ package object num2ByteFloat {
 
   class AIR_PRESSURE(override val value: Float) extends Num2ByteFloatValue(value) {
     override val min = 0
-	  override val unit = "Pa"
+    override val unit = "Pa"
   }
 
   class AIRQUALITY(override val value: Float) extends Num2ByteFloatValue(value) {
     override val min = 0
-	  override val unit = "ppm"
+    override val unit = "ppm"
   }
 
   class ELECTRICAL_CURRENT(override val value: Float) extends Num2ByteFloatValue(value) {
-	  override val unit = "mA"
+    override val unit = "mA"
   }
 
   class HUMIDITY(override val value: Float) extends Num2ByteFloatValue(value) {
     override val min = 0
-	  override val unit = "%"
+    override val unit = "%"
   }
 
   class INTENSITY_OF_LIGHT(override val value: Float) extends Num2ByteFloatValue(value) {
     override val min = 0
-	  override val unit = "lx"
+    override val unit = "lx"
   }
 
   class KELVIN_PER_PERCENT(override val value: Float) extends Num2ByteFloatValue(value) {
-	  override val unit = "K/%"
+    override val unit = "K/%"
   }
 
   class POWER(override val value: Float) extends Num2ByteFloatValue(value) {
-	  override val unit = "kW"
+    override val unit = "kW"
   }
 
   class POWERDENSITY(override val value: Float) extends Num2ByteFloatValue(value) {
-	  override val unit = "W/m²"
+    override val unit = "W/m²"
   }
 
   class TEMPERATURE(override val value: Float) extends Num2ByteFloatValue(value) {
     override val min = -273
-	  override val unit = "°C"
+    override val unit = "°C"
   }
 
   class TEMPERATURE_DIFFERENCE(override val value: Float) extends Num2ByteFloatValue(value) {
-	  override val unit = "K"
+    override val unit = "K"
   }
 
   class TEMPERATURE_GRADIENT(override val value: Float) extends Num2ByteFloatValue(value) {
-	  override val unit = "K/h"
+    override val unit = "K/h"
   }
 
   class TIME_DIFFERENCE1(override val value: Float) extends Num2ByteFloatValue(value) {
-	  override val unit = "s"
+    override val unit = "s"
   }
 
   class TIME_DIFFERENCE2
   (override val value: Float) extends Num2ByteFloatValue(value) {
-	  override val unit = "ms"
+    override val unit = "ms"
   }
 
   class VOLTAGE(override val value: Float) extends Num2ByteFloatValue(value) {
-	  override val unit = "mV"
+    override val unit = "mV"
   }
 
   class WIND_SPEED(override val value: Float) extends Num2ByteFloatValue(value) {
     override val min = 0
-	  override val unit = "m/s"
+    override val unit = "m/s"
   }
 }
-

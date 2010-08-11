@@ -2,7 +2,7 @@ import org.scalimero.dsl._
 import org.scalimero.device._
 import org.scalimero.device.preconf._
 import org.scalimero.device.dtype._
-import org.scalimero.device.dtype.Boolean._
+import org.scalimero.device.dtype.boolean._
 import org.scalimero.device._
 
 object Example extends Application {
@@ -19,7 +19,7 @@ lA turn on
 lA turn off
 
 //subscribe to lamp A's on event, i.e. lB gets turned on whenever lA is turned on
-lA.subscribe(on){
+lA.eventSubscribe(on){
   lB turn on
 }
 

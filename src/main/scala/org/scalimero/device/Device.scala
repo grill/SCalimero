@@ -33,6 +33,7 @@ abstract class Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveTyp
   
   def detach() = net.unsubscribe(this)
   def send(dpvalue: DataPointValueType) = net.send(dp, dpt.translate(dpvalue.value))
+  private[device] def write(pvalue: PrimitiveType) = net.send(dp, dpt.translate(pvalue))
 
   override def act() {
     loop{
@@ -42,32 +43,32 @@ abstract class Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveTyp
           callEvents(value)
           callWrites(value)
         }
-        case Subscribe(event, callback) => reply { super.subscribe(event)(callback) }
-        case UnSubscribe(callback) => super.unsubscribe(callback)
-        case WSubscribe(callback) => reply { super.subscribe(callback) }
-        case WUnsubscribe(callback) => super.unsubscribe(callback)
+        case Subscribe(event, callback) => reply { super.eventSubscribe(event)(callback) }
+        case UnSubscribe(callback) => super.eventUnsubscribe(callback)
+        case WSubscribe(callback) => reply { super.writeSubscribe(callback) }
+        case WUnsubscribe(callback) => super.writeUnsubscribe(callback)
         case _ => println("A message has arrived Sir!")
       }
     }
   }
 
-  override def subscribe(event: Any) (callback: => Unit) = {
+  override def eventSubscribe(event: Any) (callback: => Unit) = {
     this !? Subscribe(event, callback _) match {
       case e: EventCallback => e
       case _ => throw new Exception("This happens all the time(hahaha)!")
     }
   }
-  override def unsubscribe(callback: EventCallback) {
+  override def eventUnsubscribe(callback: EventCallback) {
     this ! UnSubscribe(callback)
   }
 
-  override def subscribe(callback : PrimitiveType => Unit) = {
+  override def writeSubscribe(callback : PrimitiveType => Unit) = {
     this !? WSubscribe(callback) match {
       case w: WriteCallback => w
       case _ => throw new Exception("This happens all the time(hahaha)!")
     }
   }
-  override def unsubscribe(callback: WriteCallback) {
+  override def writeUnsubscribe(callback: WriteCallback) {
     this ! WUnsubscribe(callback)
   }
 

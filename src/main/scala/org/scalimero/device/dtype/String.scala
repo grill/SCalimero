@@ -14,6 +14,7 @@ abstract class StringType(override val dpt: DPT) extends DPType[STRING, String](
   }
 }
 
+class STRING(override val value: String) extends DPValue[String]
 
 package object string {
   trait implicits {
@@ -23,4 +24,3 @@ package object string {
   object ASCII extends StringType(DPTXlatorString.DPT_STRING_ASCII)
 }
 
-class STRING(val value: String) extends DPValue
