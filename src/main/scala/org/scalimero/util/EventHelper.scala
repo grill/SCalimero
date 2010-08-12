@@ -25,7 +25,7 @@ trait EventHelper[T] {
   }
   
   def eventUnsubscribe(callback : EventCallback) = {
-    callbacks = callbacks map ((e) => (e._1, e._2 filterNot (_==callback)))
+    callbacks = callbacks mapValues (_ filterNot (_==callback))
   }
   
   def callEvents(value : T){

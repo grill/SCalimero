@@ -21,6 +21,8 @@ object Network {
   def close = default.close
 }
 
+case class WriteEvent(value : String, destination : GroupAddress)
+
 class Network(var router : String, var medium : KNXMediumSettings = Network.defaultMedium) {
   var nl : KNXNetworkLink = null
   var opened = false
@@ -34,6 +36,7 @@ class Network(var router : String, var medium : KNXMediumSettings = Network.defa
         case Unsubscribe(a) => subscriptions filterNot {_._2 == a}
         case e : DetachEvent => subscriptions flatMap {_._2} foreach {_ ! e}
         case e : ProcessEvent => subscriptions(e.getDestination) foreach {_ ! e}
+        case e : WriteEvent => subscriptions(e.destination) foreach {_ ! e}
       }
     }
   }
@@ -60,7 +63,10 @@ class Network(var router : String, var medium : KNXMediumSettings = Network.defa
       nl.close
   }
   
-  def send(dp : Datapoint, value : String) = pc.write(dp, value)
+  def send(dp : Datapoint, value : String) = {
+    act ! WriteEvent(value, dp.getMainAddress)
+    pc.write(dp, value)
+  }
   def read(dp : Datapoint) = pc.read(dp)
   
   def networkLink = if(nl != null && nl.isOpen) nl else {

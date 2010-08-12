@@ -15,16 +15,16 @@ import tuwien.auto.calimero.GroupAddress
 
 trait TDevice
 
-trait TCommandDevice[T] extends TDevice {
-  def send(value: T): Unit
+trait TCommandDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType] extends TDevice {
+  def send(value: DataPointValueType): Unit
 }
 
-trait TStateDevice[T] extends TDevice {
-  def read(): T
+trait TStateDevice[PrimitiveType] extends TDevice {
+  def read(): PrimitiveType
 }
 
 abstract class Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType](destAddr: GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitiveType], name: String, net: Network)
-  extends Actor with EventHelper[PrimitiveType] with WriteCallbackHelper[PrimitiveType]{
+  extends Actor with EventHelper[PrimitiveType] with WriteCallbackHelper[PrimitiveType] with TCommandDevice[DataPointValueType, PrimitiveType]{
 
   val dp: Datapoint
 
@@ -38,12 +38,15 @@ abstract class Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveTyp
   override def act() {
     loop{
       react {
-        case p: ProcessEvent => {
-          val value : PrimitiveType= dpt.translate(dpt.translate(p.getASDU))
+        case pe: ProcessEvent => {
+          this ! WriteEvent(dpt.translate(pe.getASDU), pe.getDestination)
+        }
+        case we: WriteEvent => {
+          val value : PrimitiveType= dpt.translate(we.value)
           callEvents(value)
           callWrites(value)
         }
-        case Subscribe(event, callback) => reply { super.eventSubscribe(event)(callback) }
+        case Subscribe(event, callback) => reply { super.eventSubscribe(event){callback()} }
         case UnSubscribe(callback) => super.eventUnsubscribe(callback)
         case WSubscribe(callback) => reply { super.writeSubscribe(callback) }
         case WUnsubscribe(callback) => super.writeUnsubscribe(callback)
@@ -91,7 +94,7 @@ class CommandDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType]
 }
 
 class StateDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitiveType], name: String = "", net: Network = Network.default) 
-  extends Device(destAddress, tt, dpt, name, net){
+  extends Device(destAddress, tt, dpt, name, net) with TStateDevice[PrimitiveType]{
   override val dp = new StateDP(destAddress, name, tt.mainNumber, dpt.id)
 
   def read(): PrimitiveType = dpt.translate(net.read(dp))
