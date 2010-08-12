@@ -7,8 +7,8 @@ import tuwien.auto.calimero.dptxlator.DPTXlator._
 
 abstract class Num2ByteUnsignedValue(override val value: Int) extends DPValue[Int] {
   val unit : String = ""
-  val min = 0
-  val max = 65536
+  lazy val min = 0
+  lazy val max = 65536
   
   if(value < min || value > max)
 		throw new OutOfBoundsException(value.toString, min.toString + " " + unit, max.toString + " " + unit)
@@ -82,12 +82,12 @@ object Num2ByteUnsigned {
   }
 
   class TIMEPERIOD_10(override val value : Int) extends Num2ByteUnsignedValue(value) {
-    override val max = 655350
+    override lazy val max = 655350
     override val unit = "ms"
   }
 
   class TIMEPERIOD_100(override val value : Int)  extends Num2ByteUnsignedValue(value) {
-    override val max = 6553500
+    override lazy val max = 6553500
     override val unit = "ms"
   }
 

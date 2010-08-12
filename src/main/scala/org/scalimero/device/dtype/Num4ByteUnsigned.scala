@@ -7,8 +7,8 @@ import tuwien.auto.calimero.dptxlator.DPTXlator._
 
 abstract class Num4ByteUnsignedValue(override val value: Long) extends DPValue[Long] {
   val unit : String = ""
-  val min = 0L
-  val max = 4294967295L
+  lazy val min = 0L
+  lazy val max = 4294967295L
   
   if(value < min || value > max)
 		throw new OutOfBoundsException(value.toString, min.toString + " " + unit, max.toString + " " + unit)

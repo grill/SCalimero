@@ -7,11 +7,11 @@ import tuwien.auto.calimero.dptxlator.DPTXlator._
 
 abstract class Num8BitUnsignedValue(override val value: Int) extends DPValue[Int] {
   val unit : String = ""
-  val min = 0
-  val max = 255
+  lazy val min = 0
+  lazy val max = 255
   
   if(value < min || value > max)
-		throw new OutOfBoundsException(value.toString, min.toString + " " + unit, max.toString + " " + unit)
+		throw new OutOfBoundsException(value.toString, min.toString, max.toString)
   
   override def toString = unit match {
     case "" => value.toString
@@ -55,7 +55,7 @@ object Num8BitUnsigned {
 
 
   class ANGLE(override val value : Int) extends Num8BitUnsignedValue(value) {
-    override val max = 360
+    override lazy val max = 360
     override val unit = "°"
   }
   
@@ -68,7 +68,7 @@ object Num8BitUnsigned {
   }
   
   class SCALING(override val value : Int) extends Num8BitUnsignedValue(value) {
-    override val max = 100
+    override lazy val max = 100
     override val unit = "%"
   }
   

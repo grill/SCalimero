@@ -1,4 +1,4 @@
-package org.scalimero.devices.test
+package org.scalimero.device.test
 
 import org.scalatest.Spec
 import org.scalatest.matchers.ShouldMatchers
@@ -7,7 +7,7 @@ import scala.collection.mutable.Stack
 import org.scalimero.device._
 import org.scalimero.device.dtype._
 import org.scalimero.device.dtype.translatortype._
-import dtype.boolean._
+import dtype.Boolean._
 import org.scalimero.dsl._
 
 class DeviceSpec extends Spec with ShouldMatchers {

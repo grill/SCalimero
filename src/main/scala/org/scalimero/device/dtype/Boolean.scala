@@ -46,19 +46,7 @@ object Boolean{
   object UPDOWN extends BooleanType(DPTXlatorBoolean.DPT_UPDOWN)
   object WINDOW_DOOR extends BooleanType(DPTXlatorBoolean.DPT_WINDOW_DOOR)
 
-}
-
-abstract class BooleanValue extends DPValue[Boolean]
-
-class False extends BooleanValue{
-  override val value = false
-}
-object False extends False
-class True extends BooleanValue {
-  override val value = true
-}
-object True extends True
-
+trait implicits {
 //ACK
 object no_action extends False
 object acknwoledge extends True
@@ -142,6 +130,21 @@ object scene_B extends True
 //SHUTTER_BLINDS_MODE
 object only_move_up_down extends False
 object move_up_down_and_step_stop extends True
+}
+}
+
+abstract class BooleanValue extends DPValue[Boolean]
+
+class False extends BooleanValue{
+  override val value = false
+}
+object False extends False
+class True extends BooleanValue {
+  override val value = true
+}
+object True extends True
+
+
 
 //BOOL
 /**
