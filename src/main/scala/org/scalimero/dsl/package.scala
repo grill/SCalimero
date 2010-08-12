@@ -2,7 +2,7 @@ package org.scalimero
 
 import org.scalimero.device.dtype._
 
-package object dsl {
+package object dsl extends implicits {
   implicit def true2bool(t: True.type) = true
   implicit def false2bool(t: False.type) = false
   implicit def true2bool(t: True) = true

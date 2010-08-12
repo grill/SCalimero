@@ -35,7 +35,7 @@ abstract class Num2ByteFloatType[T <: DPValue[Float]](dpt: DPT) extends DPType[T
   }
 }
 
-package object num2ByteFloat {
+object Num2ByteFloat {
   trait implicits {
     implicit def float2AIR_PRESSURE(f : Float) = new AIR_PRESSURE(f)
     implicit def float2AIRQUALITY(f : Float) = new AIRQUALITY(f)

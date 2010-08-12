@@ -38,7 +38,7 @@ abstract class Num8BitUnsignedType[T <: DPValue[Int]](dpt: DPT) extends DPType[T
     }   
 }
 
-package object num8BitUnsigned {
+object Num8BitUnsigned {
   trait implicits {
     implicit def int2ANGLE(i : Int) = new ANGLE(i)
     implicit def int2DECIMALFACTOR(i : Int) = new DECIMALFACTOR(i)

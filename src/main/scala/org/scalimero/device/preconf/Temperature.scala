@@ -2,7 +2,7 @@ package org.scalimero.device.preconf
 
 import org.scalimero.device._
 import org.scalimero.device.dtype._
-import org.scalimero.device.dtype.num2ByteFloat._
+import org.scalimero.device.dtype.Num2ByteFloat._
 import org.scalimero.device.dtype.translatortype._
 
 import tuwien.auto.calimero.GroupAddress

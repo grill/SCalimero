@@ -38,7 +38,7 @@ abstract class Num3BitControlledType[T <: DPValue[Int]](dpt: DPT) extends DPType
   }
 }
 
-package object num3BitControlled {
+object Num3BitControlled {
   trait implicits {
     implicit def int2CONTROL_BLINDS(i : Int) = new CONTROL_BLINDS(i)
     implicit def int2CONTROL_DIMMING(i : Int) = new CONTROL_DIMMING(i)

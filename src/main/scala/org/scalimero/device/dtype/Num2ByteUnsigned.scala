@@ -38,7 +38,7 @@ abstract class Num2ByteUnsignedType[T <: DPValue[Int]](dpt: DPT) extends DPType[
     }   
 }
 
-package object num2ByteUnsigned {
+object Num2ByteUnsigned {
   trait implicits {
     implicit def int2BRIGHTNESS(i : Int) = new BRIGHTNESS(i)
     implicit def int2ELECTRICAL_CURRENT(i : Int) = new ELECTRICAL_CURRENT(i)

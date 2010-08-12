@@ -22,7 +22,7 @@ abstract class BooleanType(dpt: DPT) extends DPType[BooleanValue, Boolean](dpt) 
   }
 }
 
-package object boolean{
+object Boolean{
   object ACK extends BooleanType(DPTXlatorBoolean.DPT_ACK )
   object ALARM extends BooleanType(DPTXlatorBoolean.DPT_ALARM )
   object BINARYVALUE extends BooleanType(DPTXlatorBoolean.DPT_BINARYVALUE )

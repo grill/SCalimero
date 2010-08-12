@@ -68,7 +68,7 @@ class DATETIME(override val value: Date) extends DPValue[Date]
 class DATE(override val value: Date) extends DPValue[Date]
 class TIME(override val value: Date) extends DPValue[Date]
 
-package object dateTime{
+object DateTime{
 
   trait implicits {
     implicit def sdf2DATETIME(date : Date) = new DATETIME(date)

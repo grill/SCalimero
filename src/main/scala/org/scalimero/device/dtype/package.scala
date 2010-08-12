@@ -1,7 +1,7 @@
 package org.scalimero.device.dtype {
-  trait implicits extends num2ByteFloat.implicits with dateTime.implicits
-    with num2ByteUnsigned.implicits with num4ByteUnsigned.implicits
-    with num8BitUnsigned.implicits with string.implicits
+  trait implicits extends Num2ByteFloat.implicits with DateTime.implicits
+    with Num2ByteUnsigned.implicits with Num4ByteUnsigned.implicits
+    with Num8BitUnsigned.implicits with String.implicits
 }
 
 package org.scalimero.device {
