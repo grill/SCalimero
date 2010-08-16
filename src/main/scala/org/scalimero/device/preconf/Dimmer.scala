@@ -7,8 +7,10 @@ import org.scalimero.device.dtype.translatortype._
 
 import tuwien.auto.calimero.GroupAddress
 
-object Dimmer {
+object Dimmer with TypeOfDevice  {
   def apply(address : GroupAddress) = new Dimmer(address)
+  type PrimitiveType = Int
+  type DataPointValueType = Num8BitUnsignedType[SCALING]
 }
 
 class Dimmer(address: GroupAddress) extends StateDevice(address, NUM8BIT_UNSIGNED, SCALING){

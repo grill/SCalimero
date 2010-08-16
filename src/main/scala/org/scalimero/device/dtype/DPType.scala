@@ -19,5 +19,10 @@ abstract class DPValue[PrimitiveType] {
   val value: PrimitiveType
 }
 
+abstract class TypeOfDevice {
+  type PrimitiveType
+  type DataPointValueType
+}
+
 class OutOfBoundsException(value: String, min: String, max: String) extends Exception("The value " + value +
   " is out of bounds! Please choose a value from " + min + " to " + max + ".")

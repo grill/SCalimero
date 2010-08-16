@@ -31,7 +31,7 @@ abstract class Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveTyp
   with TCommandDevice[DataPointValueType, PrimitiveType]{
 
   val dp: Datapoint
-
+  
   start
   net.subscribe(this, List(destAddr))
   

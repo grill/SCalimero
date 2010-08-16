@@ -7,8 +7,10 @@ import org.scalimero.device.dtype.translatortype._
 
 import tuwien.auto.calimero.GroupAddress
 
-object Temperature {
+object Temperature  with TypeOfDevice {
   def apply(address : GroupAddress) = new Temperature(address)
+  type PrimitiveType = Float
+  type DataPointValueType = Num2ByteFloatType[TEMPERATURE]
 }
 
 class Temperature(address: GroupAddress) extends StateDevice(address, NUM2OCTET_FLOAT, TEMPERATURE){

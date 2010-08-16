@@ -7,8 +7,10 @@ import org.scalimero.device.dtype.translatortype._
 
 import tuwien.auto.calimero.GroupAddress
 
-object Lamp {
+object Lamp with TypeOfDevice {
   def apply(address : GroupAddress) = new Lamp(address)
+  type PrimitiveType = Boolean
+  type DataPointValueType = BooleanType
 }
 
 class Lamp(address: GroupAddress) extends StateDevice(address, BOOLEAN, SWITCH){
