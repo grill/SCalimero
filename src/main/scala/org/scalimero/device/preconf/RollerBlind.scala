@@ -7,7 +7,7 @@ import org.scalimero.device.dtype.translatortype._
 
 import tuwien.auto.calimero.GroupAddress
 
-object RollerBlind with TypeOfDevice {
+object RollerBlind extends TypeOfDevice {
   def apply(address : GroupAddress) = new RollerBlind(address)
   type PrimitiveType = Int
   type DataPointValueType = Num8BitUnsignedType[SCALING]

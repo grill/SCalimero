@@ -7,7 +7,7 @@ import org.scalimero.device.dtype.translatortype._
 
 import tuwien.auto.calimero.GroupAddress
 
-object Switch  with TypeOfDevice {
+object Switch extends TypeOfDevice {
   def apply(address : GroupAddress) = new Switch(address)
   type PrimitiveType = Boolean
   type DataPointValueType = BooleanType

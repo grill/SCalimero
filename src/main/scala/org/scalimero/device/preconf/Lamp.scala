@@ -7,7 +7,7 @@ import org.scalimero.device.dtype.translatortype._
 
 import tuwien.auto.calimero.GroupAddress
 
-object Lamp with TypeOfDevice {
+object Lamp extends TypeOfDevice {
   def apply(address : GroupAddress) = new Lamp(address)
   type PrimitiveType = Boolean
   type DataPointValueType = BooleanType
