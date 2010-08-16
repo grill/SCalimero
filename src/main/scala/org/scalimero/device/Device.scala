@@ -15,7 +15,8 @@ import tuwien.auto.calimero.GroupAddress
 
 trait TDevice
 
-trait TCommandDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType] extends TDevice {
+trait TCommandDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType]
+  extends TDevice {
   def send(value: DataPointValueType): Unit
 }
 
@@ -23,8 +24,10 @@ trait TStateDevice[PrimitiveType] extends TDevice {
   def read(): PrimitiveType
 }
 
-abstract class Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType](destAddr: GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitiveType], name: String, net: Network)
-  extends Actor with EventHelper[PrimitiveType] with WriteCallbackHelper[PrimitiveType] with TCommandDevice[DataPointValueType, PrimitiveType]{
+abstract class Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType]
+  (destAddr: GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitiveType],
+  name: String, net: Network) extends Actor with EventHelper[PrimitiveType] with WriteCallbackHelper[PrimitiveType]
+  with TCommandDevice[DataPointValueType, PrimitiveType]{
 
   val dp: Datapoint
 
@@ -83,19 +86,26 @@ abstract class Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveTyp
 }
 
 object Device {
-  def apply[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitiveType], name: String = "", net: Network = Network.default) =
-    new StateDevice(destAddress, tt, dpt, name, net)
+  def apply[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType]
+    (destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitiveType],
+    name: String = "", net: Network = Network.default) = new StateDevice(destAddress, tt, dpt, name, net)
 }
 
-class CommandDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitiveType], name: String = "", net: Network = Network.default) 
+class CommandDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType]
+  (destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitiveType],
+  name: String = "", net: Network = Network.default) 
   extends Device(destAddress, tt, dpt, name, net){
-  override val dp = new CommandDP(destAddress, name, tt.mainNumber, dpt.id)
   
+  override val dp = new CommandDP(destAddress, name, tt.mainNumber, dpt.id)
 }
 
-class StateDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType](destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitiveType], name: String = "", net: Network = Network.default) 
+class StateDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType]
+  (destAddress:GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitiveType],
+  name: String = "", net: Network = Network.default) 
   extends Device(destAddress, tt, dpt, name, net) with TStateDevice[PrimitiveType]{
+  
   override val dp = new StateDP(destAddress, name, tt.mainNumber, dpt.id)
 
   def read(): PrimitiveType = dpt.translate(net.read(dp))
+  def readOption(): Option[PrimitiveType] = try { Some(read) } catch { case e => None}
 }
