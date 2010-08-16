@@ -23,6 +23,8 @@ package object dsl extends implicits {
   val DateTime = dtype.DateTime
   val Boolean = dtype.Boolean
   
+  val Network = connection.Network
+  
   val Lamp = preconf.Lamp
   val Dimmer = preconf.Dimmer
   val RollerBlind = preconf.RollerBlind

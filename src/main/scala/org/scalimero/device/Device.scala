@@ -4,8 +4,9 @@ import scala.actors.Actor
 import scala.actors.Actor._
 
 import org.scalimero.device.dtype._
-import org.scalimero.dsl._
+//import org.scalimero.dsl._
 import org.scalimero.util._
+import org.scalimero.connection._
 
 import tuwien.auto.calimero._  
 import tuwien.auto.calimero.datapoint._
