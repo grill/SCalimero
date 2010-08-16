@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 //Not tested
-abstract class DateTimeType(override val dpt: DPT) extends DPType[DATETIME, Date](dpt) {
+abstract class DateTimeType(override val dpt: DPT) extends DPType[DateTime.DATETIME, Date](dpt) {
   val dptx = new DPTXlatorDateTime (dpt)
 
   def translate(value: String): Date = {
@@ -26,7 +26,7 @@ abstract class DateTimeType(override val dpt: DPT) extends DPType[DATETIME, Date
   }
 }
 
-abstract class DateType(override val dpt: DPT) extends DPType[DATE, Date](dpt) {
+abstract class DateType(override val dpt: DPT) extends DPType[DateTime.DATE, Date](dpt) {
   val dptx = new DPTXlatorDate (dpt)
 
   def translate(value: String): Date = {
@@ -45,7 +45,7 @@ abstract class DateType(override val dpt: DPT) extends DPType[DATE, Date](dpt) {
   }
 }
 
-abstract class TimeType(override val dpt: DPT) extends DPType[TIME, Date](dpt) {
+abstract class TimeType(override val dpt: DPT) extends DPType[DateTime.TIME, Date](dpt) {
   val dptx = new DPTXlatorTime (dpt)
 
   def translate(value: String): Date = {
@@ -64,10 +64,6 @@ abstract class TimeType(override val dpt: DPT) extends DPType[TIME, Date](dpt) {
   }
 }
 
-class DATETIME(override val value: Date) extends DPValue[Date]
-class DATE(override val value: Date) extends DPValue[Date]
-class TIME(override val value: Date) extends DPValue[Date]
-
 object DateTime{
 
   trait implicits {
@@ -81,4 +77,8 @@ object DateTime{
   object DATE extends DateType(DPTXlatorDate.DPT_DATE )
 
   object TIME extends TimeType(DPTXlatorTime.DPT_TIMEOFDAY)
+  
+  class DATETIME(override val value: Date) extends DPValue[Date]
+  class DATE(override val value: Date) extends DPValue[Date]
+  class TIME(override val value: Date) extends DPValue[Date]
 }
