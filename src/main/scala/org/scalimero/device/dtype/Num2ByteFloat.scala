@@ -7,8 +7,8 @@ import tuwien.auto.calimero.dptxlator.DPTXlator._
 
 abstract class Num2ByteFloatValue(override val value: Float) extends DPValue[Float] {
   val unit : String = ""
-  val min = -670760
-  val max = 670760
+  lazy val min = -670760
+  lazy val max = 670760
 
   if(value < min || value > max)
     throw new OutOfBoundsException(value.toString, min.toString + " " + unit, max.toString + " " + unit)
@@ -35,7 +35,7 @@ abstract class Num2ByteFloatType[T <: DPValue[Float]](dpt: DPT) extends DPType[T
   }
 }
 
-package object num2ByteFloat {
+object Num2ByteFloat {
   trait implicits {
     implicit def float2AIR_PRESSURE(f : Float) = new AIR_PRESSURE(f)
     implicit def float2AIRQUALITY(f : Float) = new AIRQUALITY(f)
@@ -72,12 +72,12 @@ package object num2ByteFloat {
 
 
   class AIR_PRESSURE(override val value: Float) extends Num2ByteFloatValue(value) {
-    override val min = 0
+    override lazy val min = 0
     override val unit = "Pa"
   }
 
   class AIRQUALITY(override val value: Float) extends Num2ByteFloatValue(value) {
-    override val min = 0
+    override lazy val min = 0
     override val unit = "ppm"
   }
 
@@ -86,12 +86,12 @@ package object num2ByteFloat {
   }
 
   class HUMIDITY(override val value: Float) extends Num2ByteFloatValue(value) {
-    override val min = 0
+    override lazy val min = 0
     override val unit = "%"
   }
 
   class INTENSITY_OF_LIGHT(override val value: Float) extends Num2ByteFloatValue(value) {
-    override val min = 0
+    override lazy val min = 0
     override val unit = "lx"
   }
 
@@ -108,7 +108,7 @@ package object num2ByteFloat {
   }
 
   class TEMPERATURE(override val value: Float) extends Num2ByteFloatValue(value) {
-    override val min = -273
+    override lazy val min = -273
     override val unit = "°C"
   }
 
@@ -134,7 +134,7 @@ package object num2ByteFloat {
   }
 
   class WIND_SPEED(override val value: Float) extends Num2ByteFloatValue(value) {
-    override val min = 0
+    override lazy val min = 0
     override val unit = "m/s"
   }
 }

@@ -19,5 +19,5 @@ abstract class DPValue[PrimitiveType] {
   val value: PrimitiveType
 }
 
-class OutOfBoundsException(value: String, min: String, max: String) extends Exception("The value = " + value +
-  "is out of bounds! Please choose a values from " + min + " to " + max + ".")
+class OutOfBoundsException(value: String, min: String, max: String) extends Exception("The value " + value +
+  " is out of bounds! Please choose a value from " + min + " to " + max + ".")

@@ -16,7 +16,7 @@ abstract class StringType(override val dpt: DPT) extends DPType[STRING, String](
 
 class STRING(override val value: String) extends DPValue[String]
 
-package object string {
+object String {
   trait implicits {
     implicit def string2STRING(s : String) = new STRING(s)
   }

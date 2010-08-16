@@ -7,8 +7,8 @@ import tuwien.auto.calimero.dptxlator.DPTXlator._
 
 abstract class Num4ByteUnsignedValue(override val value: Long) extends DPValue[Long] {
   val unit : String = ""
-  val min = 0L
-  val max = 4294967295L
+  lazy val min = 0L
+  lazy val max = 4294967295L
   
   if(value < min || value > max)
 		throw new OutOfBoundsException(value.toString, min.toString + " " + unit, max.toString + " " + unit)
@@ -38,7 +38,7 @@ abstract class Num4ByteUnsignedType[T <: DPValue[Long]](dpt: DPT) extends DPType
     }   
 }
 
-package object num4ByteUnsigned {
+object Num4ByteUnsigned {
   trait implicits {
     implicit def int2VALUE_4_UCOUNT(i : Int) = new VALUE_4_UCOUNT(i)
   }

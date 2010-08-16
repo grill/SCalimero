@@ -7,8 +7,8 @@ import tuwien.auto.calimero.dptxlator.DPTXlator._
 
 abstract class Num3BitControlledValue(override val value: Int) extends DPValue[Int] {
   val unit : String = ""
-  val min = -7
-  val max = 7
+  lazy val min = -7
+  lazy val max = 7
   
   if(value < min || value > max)
 		throw new OutOfBoundsException(value.toString, min.toString + " " + unit, max.toString + " " + unit)
@@ -38,7 +38,7 @@ abstract class Num3BitControlledType[T <: DPValue[Int]](dpt: DPT) extends DPType
   }
 }
 
-package object num3BitControlled {
+object Num3BitControlled {
   trait implicits {
     implicit def int2CONTROL_BLINDS(i : Int) = new CONTROL_BLINDS(i)
     implicit def int2CONTROL_DIMMING(i : Int) = new CONTROL_DIMMING(i)
