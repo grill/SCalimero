@@ -67,23 +67,33 @@ class Network(var router : String, var medium : KNXMediumSettings = Network.defa
   def unsubscribe(a : Actor) = act ! Unsubscribe(a : Actor)
   
   def open {
-    pc = new ProcessCommunicatorImpl(networkLink)
-    pc.addProcessListener(pl)
-    opened = true
+    if(opened) {
+      pc = new ProcessCommunicatorImpl(networkLink)
+      pc.addProcessListener(pl)
+      opened = true
+    }
   }
   
   def close {
-    opened = false
-    if(nl != null && nl.isOpen)
-      nl.close
+    if(opened) {
+      opened = false
+      if(nl != null && nl.isOpen)
+        nl.close
+    }
   }
   
-  def send(dp : Datapoint, value : String) = {
-    act ! WriteEvent(value, dp.getMainAddress)
-    pc.write(dp, value)
+  def send(dp : Datapoint, value : String) {
+    if(opened) {
+      act ! WriteEvent(value, dp.getMainAddress)
+      pc.write(dp, value)
+    }
   }
-  def readRequest(dst : GroupAddress) = networkLink.sendRequest(dst, Priority.LOW, DataUnitBuilder.createCompactAPDU(0x00, null));
-  def read(dp : Datapoint) = pc.read(dp)
+  def readRequest(dst : GroupAddress) {
+    if(opened) {
+      networkLink.sendRequest(dst, Priority.LOW, DataUnitBuilder.createCompactAPDU(0x00, null))
+    }
+  }
+  def read(dp : Datapoint) = if(opened){pc.read(dp)} else null
   
   def networkLink = if(nl != null && nl.isOpen) nl else {
     new KNXNetworkLinkIP(router, medium)
