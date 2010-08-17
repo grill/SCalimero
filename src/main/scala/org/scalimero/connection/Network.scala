@@ -28,7 +28,12 @@ class Network(var router : String, var medium : KNXMediumSettings = Network.defa
   var opened = false
   var pc : ProcessCommunicator = null
   
-  var subscriptions = Map[GroupAddress,List[Actor]]() withDefaultValue Nil
+  var gasubscriptions = Map[GroupAddress,List[Actor]]() withDefaultValue Nil
+  var globalsubscriptions = List[Actor]()
+  
+  def subscriptions = gasubscriptions.flatMap{_._2} ++ globalsubscriptions
+  def subscriptions(ga : GroupAddress) = gasubscriptions(ga) ::: globalsubscriptions
+  
   val act : {def !(msg : Any) : Unit} = actor {
     loop {
       react(
@@ -38,14 +43,19 @@ class Network(var router : String, var medium : KNXMediumSettings = Network.defa
   }
   
   def actorBody : PartialFunction[Any, Unit] = {
-    case Subscribe(a, gas) => gas foreach {ga => subscriptions = subscriptions updated (ga, a :: subscriptions(ga))}
-    case Unsubscribe(a) => subscriptions filterNot {_._2 == a}
-    case e : DetachEvent => subscriptions flatMap {_._2} foreach {_ ! e}
+    case Subscribe(a, gas) => gas foreach {ga => gasubscriptions = gasubscriptions updated (ga, a :: gasubscriptions(ga))}
+    case GSubscribe(a) => globalsubscriptions = a :: globalsubscriptions
+    case Unsubscribe(a) => {
+      gasubscriptions = gasubscriptions filterNot {_._2 == a}
+      globalsubscriptions = globalsubscriptions filterNot {_ == a}
+    }
+    case e : DetachEvent => subscriptions foreach {_ ! e}
     case e : ProcessEvent => subscriptions(e.getDestination) foreach {_ ! e}
     case e : WriteEvent => subscriptions(e.destination) foreach {_ ! e}
   }
   
   case class Subscribe(a : Actor, ga : List[GroupAddress])
+  case class GSubscribe(a : Actor)
   case class Unsubscribe(a : Actor)
   object pl extends ProcessListener{
     def detached(e : DetachEvent) {act ! e}
@@ -53,6 +63,7 @@ class Network(var router : String, var medium : KNXMediumSettings = Network.defa
   }
   
   def subscribe(a : Actor, ga : List[GroupAddress]) = act ! Subscribe(a : Actor, ga : List[GroupAddress])
+  def subscribe(a : Actor) = act ! GSubscribe(a)
   def unsubscribe(a : Actor) = act ! Unsubscribe(a : Actor)
   
   def open {
