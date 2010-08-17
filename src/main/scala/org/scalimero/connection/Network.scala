@@ -71,6 +71,7 @@ class Network(var router : String, var medium : KNXMediumSettings = Network.defa
     act ! WriteEvent(value, dp.getMainAddress)
     pc.write(dp, value)
   }
+  def readRequest(dst : GroupAddress) = networkLink.sendRequest(dst, Priority.LOW, DataUnitBuilder.createCompactAPDU(0x00, null));
   def read(dp : Datapoint) = pc.read(dp)
   
   def networkLink = if(nl != null && nl.isOpen) nl else {

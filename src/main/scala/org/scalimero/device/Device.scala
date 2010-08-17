@@ -27,11 +27,11 @@ trait TStateDevice[PrimitiveType] extends TDevice {
 class SimpleDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType]
   (destAddr: GroupAddress, tt: TranslatorType, val dpt: DPType[DataPointValueType, PrimitiveType],
   name: String = "", net: Network = Network.default) {
-  override val dp = new StateDP(destAddr, name, tt.mainNumber, dpt.id)
+  val dp = new StateDP(destAddr, name, tt.mainNumber, dpt.id)
 
   def read(): PrimitiveType = dpt.translate(net.read(dp))
   def readOption(): Option[PrimitiveType] = try { Some(read) } catch { case e => None}
-  def readRequest() = net.readRequest
+  def readRequest() = net.readRequest(destAddr)
 
   def send(dpvalue: DataPointValueType) = net.send(dp, dpt.translate(dpvalue.value))
   def write(pvalue: PrimitiveType) = net.send(dp, dpt.translate(pvalue))
