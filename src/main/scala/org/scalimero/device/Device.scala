@@ -27,7 +27,7 @@ trait TStateDevice[PrimitiveType] extends TDevice {
 class SimpleDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType]
   (destAddr: GroupAddress, tt: TranslatorType, val dpt: DPType[DataPointValueType, PrimitiveType],
   name: String = "", net: Network = Network.default) {
-  override val dp = new StateDP(destAddress, name, tt.mainNumber, dpt.id)
+  override val dp = new StateDP(destAddr, name, tt.mainNumber, dpt.id)
 
   def read(): PrimitiveType = dpt.translate(net.read(dp))
   def readOption(): Option[PrimitiveType] = try { Some(read) } catch { case e => None}
