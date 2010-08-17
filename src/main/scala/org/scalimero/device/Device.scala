@@ -15,7 +15,6 @@ import tuwien.auto.calimero.process._
 import tuwien.auto.calimero.GroupAddress
 
 trait TDevice
-
 trait TCommandDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType]
   extends TDevice {
   def send(value: DataPointValueType): Unit
@@ -23,6 +22,20 @@ trait TCommandDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType
 
 trait TStateDevice[PrimitiveType] extends TDevice {
   def read(): PrimitiveType
+}
+
+class SimpleDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType]
+  (destAddr: GroupAddress, tt: TranslatorType, val dpt: DPType[DataPointValueType, PrimitiveType],
+  name: String = "", net: Network = Network.default) {
+
+  def read(): PrimitiveType = dpt.translate(net.read(dp))
+  def readOption(): Option[PrimitiveType] = try { Some(read) } catch { case e => None}
+  def readAsyn() = net.readAsn()
+  
+  def send(dpvalue: DataPointValueType) = net.send(dp, dpt.translate(dpvalue.value))
+  def write(pvalue: PrimitiveType) = net.send(dp, dpt.translate(pvalue))
+  def write(pvalue: Array[Byte]) = net.send(dp, dpt.translate(pvalue))
+  def write(pvalue: String) = net.send(dp, pvalue)
 }
 
 abstract class Device[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType]
