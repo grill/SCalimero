@@ -30,8 +30,8 @@ class SimpleDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType]
 
   def read(): PrimitiveType = dpt.translate(net.read(dp))
   def readOption(): Option[PrimitiveType] = try { Some(read) } catch { case e => None}
-  def readAsyn() = net.readAsn()
-  
+  def readRequest() = net.readRequest
+
   def send(dpvalue: DataPointValueType) = net.send(dp, dpt.translate(dpvalue.value))
   def write(pvalue: PrimitiveType) = net.send(dp, dpt.translate(pvalue))
   def write(pvalue: Array[Byte]) = net.send(dp, dpt.translate(pvalue))
