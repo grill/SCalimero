@@ -22,14 +22,15 @@ object Network {
 }
 
 case class WriteEvent(value : String, destination : GroupAddress)
+class NoNetworkException extends Exception("No Network!")
 
 class Network(var router : String, var medium : KNXMediumSettings = Network.defaultMedium) {
   var nl : KNXNetworkLink = null
   var opened = false
   var pc : ProcessCommunicator = null
   
-  var gasubscriptions = Map[GroupAddress,List[Actor]]() withDefaultValue Nil
-  var globalsubscriptions = List[Actor]()
+  var gasubscriptions = Map[GroupAddress,List[{def !(msg : Any) : Unit}]]() withDefaultValue Nil
+  var globalsubscriptions = List[{def !(msg : Any) : Unit}]()
   
   def subscriptions = gasubscriptions.flatMap{_._2} ++ globalsubscriptions
   def subscriptions(ga : GroupAddress) = gasubscriptions(ga) ::: globalsubscriptions
@@ -54,23 +55,25 @@ class Network(var router : String, var medium : KNXMediumSettings = Network.defa
     case e : WriteEvent => subscriptions(e.destination) foreach {_ ! e}
   }
   
-  case class Subscribe(a : Actor, ga : List[GroupAddress])
-  case class GSubscribe(a : Actor)
-  case class Unsubscribe(a : Actor)
+  case class Subscribe(a : {def !(msg : Any) : Unit}, ga : List[GroupAddress])
+  case class GSubscribe(a : {def !(msg : Any) : Unit})
+  case class Unsubscribe(a : {def !(msg : Any) : Unit})
   object pl extends ProcessListener{
     def detached(e : DetachEvent) {act ! e}
     def groupWrite(e : ProcessEvent) {act ! e}
   }
   
-  def subscribe(a : Actor, ga : List[GroupAddress]) = act ! Subscribe(a : Actor, ga : List[GroupAddress])
-  def subscribe(a : Actor) = act ! GSubscribe(a)
-  def unsubscribe(a : Actor) = act ! Unsubscribe(a : Actor)
+  def subscribe(a : {def !(msg : Any) : Unit}, ga : List[GroupAddress]) = act ! Subscribe(a : {def !(msg : Any) : Unit}, ga : List[GroupAddress])
+  def subscribe(a : {def !(msg : Any) : Unit}) = act ! GSubscribe(a)
+  def unsubscribe(a : {def !(msg : Any) : Unit}) = act ! Unsubscribe(a : {def !(msg : Any) : Unit})
   
   def open {
     if(opened) {
       pc = new ProcessCommunicatorImpl(networkLink)
       pc.addProcessListener(pl)
       opened = true
+    } else {
+      throw new NoNetworkException
     }
   }
   
@@ -79,6 +82,8 @@ class Network(var router : String, var medium : KNXMediumSettings = Network.defa
       opened = false
       if(nl != null && nl.isOpen)
         nl.close
+    } else {
+      throw new NoNetworkException
     }
   }
   
@@ -93,7 +98,9 @@ class Network(var router : String, var medium : KNXMediumSettings = Network.defa
       networkLink.sendRequest(dst, Priority.LOW, DataUnitBuilder.createCompactAPDU(0x00, null))
     }
   }
-  def read(dp : Datapoint) = if(opened){pc.read(dp)} else null
+  def read(dp : Datapoint) = if(opened){pc.read(dp)} else {
+      throw new NoNetworkException; null
+    }
   
   def networkLink = if(nl != null && nl.isOpen) nl else {
     new KNXNetworkLinkIP(router, medium)
