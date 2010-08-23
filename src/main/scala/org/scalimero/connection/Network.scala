@@ -68,12 +68,10 @@ class Network(var router : String, var medium : KNXMediumSettings = Network.defa
   def unsubscribe(a : {def !(msg : Any) : Unit}) = act ! Unsubscribe(a : {def !(msg : Any) : Unit})
   
   def open {
-    if(opened) {
+    if(! opened) {
       pc = new ProcessCommunicatorImpl(networkLink)
       pc.addProcessListener(pl)
       opened = true
-    } else {
-      throw new NoNetworkException
     }
   }
   
@@ -82,8 +80,6 @@ class Network(var router : String, var medium : KNXMediumSettings = Network.defa
       opened = false
       if(nl != null && nl.isOpen)
         nl.close
-    } else {
-      throw new NoNetworkException
     }
   }
   
@@ -91,11 +87,15 @@ class Network(var router : String, var medium : KNXMediumSettings = Network.defa
     if(opened) {
       act ! WriteEvent(value, dp.getMainAddress)
       pc.write(dp, value)
+    } else {
+      throw new NoNetworkException; null
     }
   }
   def readRequest(dst : GroupAddress) {
     if(opened) {
       networkLink.sendRequest(dst, Priority.LOW, DataUnitBuilder.createCompactAPDU(0x00, null))
+    } else {
+      throw new NoNetworkException; null
     }
   }
   def read(dp : Datapoint) = if(opened){pc.read(dp)} else {
