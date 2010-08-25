@@ -1,7 +1,8 @@
 \chapter{DSL}
+The scalimero DSL is an easy interface for accessing KNX devices and meant to be used in the Scala interpreter. It features convenient classes and a lot of implicit conversions to make the code look good while being able to check type bounds.
 
-\section{Examples}
-The scalimero DSL is an easy interface for accessing KNX devices and meant to be used in the Scala interpreter. To use it,
+\section{Example}
+To use the DSL,
 \begin{lstlisting}
 import tuwien.auto.scalimero.dsl._
 \end{lstlisting}
@@ -44,3 +45,124 @@ lA.writeSubscribe{
   println("lA status: " + newstatus)
 }
 \end{lstlisting}
+
+\section{Network}
+
+The \lstinline!Network! class and companion object in the \lstinline!tuwien.auto.scalimero.connection! package are the access point to the KNX network. To declare a \lstinline!Network!, use the companion objects apply method:
+
+\begin{lstlisting}
+Network("knxrouter")
+\end{lstlisting}
+
+Replace \lstinline!"knxrouter"! with a correct KNX router IP address or DNS name. The default medium is twisted pair 1 (9600 bit/s). If you need a different medium for a particular \lstinline!Network!, use the optional medium parameter:
+
+\begin{lstlisting}
+Network("knxrouter", TPSettings.TP0)
+\end{lstlisting}
+
+You can set this globally for all \lstinline!Network!s by assigning to the companion object's \lstinline!defaultMedium! field:
+
+\begin{lstlisting}
+Network.defaultMedium = TPSettings.TP0
+Network("knxrouter")
+\end{lstlisting}
+
+All devices will use the last \lstinline!Network! created by default. If you want to create the \lstinline!Network!s seperately from the devices, you can pass a code block to the \lstinline!Network!s, and every device created within will use the specific \lstinline!Network!. It gets clearer in an example:
+
+\begin{lstlisting}
+val newnet = Network("knxrouter")
+val oldnet = Network("knxrouter-old", TPSettings.TP0)
+
+newnet {
+  Lamp("1/1/1")
+  Lamp("1/1/2")
+}
+oldnet {
+  Lamp("1/2/3")
+  Lamp("1/2/5")
+}
+\end{lstlisting}
+
+While this was introduced to resemble a markup language, it may be difficult to access the devices from the outside.
+
+If you want to update a particular device (and trigger its callbacks), you can send a read request to the KNX device. It will answer with its current value and the \lstinline!Network! will relais that update to the device objects:
+
+\begin{lstlisting}
+net.readRequest("1/1/1")
+\end{lstlisting}
+
+Note that this call is asynchronous and can (and should) be done from the device object, if available, using its \lstinline!readRequest! method.
+
+You can also subscribe to events on the KNX network. This is seldom needed, however, as devices do so automatically and messages received from the \lstinline!Network! lack type information. Still, it can be useful if you need to implement a seperate device handling mechanism:
+
+\begin{lstlisting}
+val net = Network("knxrouter")
+val act = actor {
+  case e : WriteEvent => ...
+  case e : ProcessEvent => ...
+}
+net subscribe act
+\end{lstlisting}
+
+The actor will start to receive \lstinline!tuwien.auto.scalimero.WriteEvent!s and \lstinline!tuwien.auto.calimero.process.ProcessEvent!s. \lstinline!WriteEvent!s occur when a scalimero device writes something to the network while \lstinline!ProcessEvent!s indicate that something on the network (e.g. a switch) sent an update. In most cases, however, it is easier to subscribe to devices themselves.
+
+\section{Devices}
+
+Devices are abstractions for the physical devices connected to the KXN bus. In most cases, the preconfigured devices in \lstinline!tuwien.auto.scalimero.device.preconf! should suffice (for information on how to create your own devices and advanced funcionality, see later chapters). As stated above, devices automatically subscribe to the last created \lstinline!Network!, so it is a bad idea to create a device without creating a \lstinline!Network! first. To create a device, use one of the constructor objects in \lstinline!preconf!:
+
+\begin{lstlisting}
+val lamp = Lamp("1/1/1")
+val switch = Switch("1/1/2")
+val dimmer = Dimmer("1/1/3")
+val rollerBlind = RollerBlind("1/1/4")
+val temperature = Temperature("1/1/5")
+\end{lstlisting}
+
+\lstinline!Lamp! and \lstinline!Switch! use boolean values or the more descriptive \lstinline!on! and \lstinline!off! aliases, while \lstinline!Dimmer! and \lstinline!RollerBlind! use percent values (= \lstinline!Int!) from 0 to 100 and \lstinline!Temperature! uses float values (unit depends on your thermostat).
+
+To set values, use the send method, or \lstinline!Lamp!'s and \lstinline!Switch!'s more natural \lstinline!turn! method.
+
+\begin{lstlisting}
+lamp turn on
+switch turn off
+dimmer send 100
+rollerBlind send 0
+temperature send 19
+\end{lstlisting}
+
+To read values, use the read method. It always is of the appropriate type.
+
+You can also subscribe callbacks. There are two types of callbacks, event callbacks and write callbacks. Event callbacks register to a specific type of event and execute whenever that event occurs while write callbacks get called every time the state of a device is updated.
+
+\begin{lstlisting}
+lamp.eventSubscribe(on) {
+  println("lA has been turned on")
+}
+
+dimmer writeSubscribe {
+  newVal : Int =>
+  println("new dimmer value:" newVal)
+}
+\end{lstlisting}
+
+The subscription methods return \lstinline!WriteCallback! or \lstinline!EventCallback! objects, which can be used to change the event code or detach(unsubscribe) the event.
+
+\begin{lstlisting}
+val wc = dimmer writeSubscribe {
+  newVal : Int =>
+  println("new dimmer value:" newVal)
+}
+
+def loggit(l : Logger) {
+  wc update {
+    newVal : Int =>
+    l.info("new dimmer value:" newVal)
+  }
+}
+
+def shutdown {
+  wc.detach
+  //which is the same as
+  //dimmer writeUnsubscribe wc
+}
+\enc{lstlisting}
