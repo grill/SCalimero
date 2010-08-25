@@ -9,6 +9,7 @@
 *.log
 *.lot
 *.out
+*.pdf
 *.synctex
 *.bak
 *.toc
