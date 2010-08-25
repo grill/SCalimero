@@ -30,7 +30,7 @@
 %
 
 %
-% Variablen, die f�rs Deckblatt verwendet werden.
+% Variablen, die fürs Deckblatt verwendet werden.
 % Die grobe Dokumentenstruktur findet sich übrigens ganz unten in dieser Datei.
 %
 \newcommand{\thesistype}{TUTORIAL}

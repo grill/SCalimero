@@ -1,0 +1,25 @@
+\chapter{Devices}
+\section{Overview}
+
+In Calimero KNX devices were represented through the \lstinline!Datapoint! class. Instances of this class could be used to send and receive messages by passing it as a parameter to a \lstinline!ProcessCommunicator!.
+
+In Scalimero a more decentralized approach was chosen. Devices were introduced.
+
+\paragraph{Devices have the following members(constructor parameter):}
+\begin{itemize}
+  \item \textbf{A KNX address}
+  
+    Can be passed as a String or GroupAddress object to the constructor of Device.
+  \item \textbf{DPType}
+  
+    \lstinline{DPType} is a wrapper class for \lstinline{DPT}, which means a instance of DPType or DPT can be passed as constructor parameter.
+  \item \textbf{Name}[optional]
+  
+    The name is a String an will be given to the DataPoint instance encapsulated in the Device class.
+  \item \textbf{Network}[optional]
+  
+    If this parameter is not given, the value of Network.default will be taken.
+\end{itemize}
+\section{Device in the REPL}
+
+\section{GroupDevices}
