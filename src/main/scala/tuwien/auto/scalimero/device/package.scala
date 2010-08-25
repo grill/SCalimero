@@ -13,5 +13,5 @@ package object device {
   implicit def bool2True_False(t: Boolean) = if(t) True else False
   
   //KNX address
-  implicit def str2groupaddr(s: String) = new GroupAddress(s) 
+  implicit def str2groupaddr(s: String) = new GroupAddress(s)
 }
