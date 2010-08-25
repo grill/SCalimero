@@ -13,7 +13,7 @@ object Temperature extends TypeOfDevice {
   type DataPointValueType = Num2ByteFloatType[TEMPERATURE]
 }
 
-class Temperature(address: GroupAddress) extends StateDevice(address, NUM2OCTET_FLOAT, TEMPERATURE){
+class Temperature(address: GroupAddress) extends StateDevice(address, TEMPERATURE){
   def set(value: TEMPERATURE) = send(value)
 
   override val events : Map[Any, (Float) => Boolean] = Map ()

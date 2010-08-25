@@ -13,7 +13,7 @@ object Switch extends TypeOfDevice {
   type DataPointValueType = BooleanType
 }
 
-class Switch(address: GroupAddress) extends StateDevice(address, BOOLEAN, TRIGGER){
+class Switch(address: GroupAddress) extends StateDevice(address, TRIGGER){
   def turn(value: BooleanValue) = send(value)
 
   override val events : Map[Any, Boolean => Boolean] = Map ()

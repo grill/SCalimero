@@ -13,7 +13,7 @@ object Lamp extends TypeOfDevice {
   type DataPointValueType = BooleanType
 }
 
-class Lamp(address: GroupAddress) extends StateDevice(address, BOOLEAN, SWITCH){
+class Lamp(address: GroupAddress) extends StateDevice(address, SWITCH){
   def turn(value: BooleanValue) = send(value)
 
   override val events : Map[Any, Boolean => Boolean] = Map (

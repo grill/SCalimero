@@ -17,5 +17,4 @@ lA turn off
 lA.eventSubscribe(on){
   lB turn on
 }
-
 }

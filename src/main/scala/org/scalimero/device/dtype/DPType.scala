@@ -6,6 +6,7 @@ import tuwien.auto.calimero.dptxlator._
 
 abstract class DPType[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType](val dpt: DPT) {
   def id = dpt.getID()
+  def mainNumber = id.split('.')(0).toInt
   def translate(value: String): PrimitiveType
   def translate(value: PrimitiveType): String
   def translate(value: Array[Byte]): String

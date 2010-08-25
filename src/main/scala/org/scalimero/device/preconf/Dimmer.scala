@@ -13,7 +13,7 @@ object Dimmer extends TypeOfDevice  {
   type DataPointValueType = Num8BitUnsignedType[SCALING]
 }
 
-class Dimmer(address: GroupAddress) extends StateDevice(address, NUM8BIT_UNSIGNED, SCALING){
+class Dimmer(address: GroupAddress) extends StateDevice(address, SCALING){
   def set(value: SCALING) = send(value)
 
   override val events : Map[Any, Int => Boolean] = Map ()

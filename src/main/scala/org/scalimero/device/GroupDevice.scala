@@ -15,9 +15,9 @@ class GroupDevice[DataPointValueType <: DPValue[PrimitiveType], PrimitiveType](d
   var proxyFun = (value: PrimitiveType) => value
   var master: StateDevice[DataPointValueType, PrimitiveType] = null
 
-  def this(destAddress: GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitiveType], name: String = "", net: Network = Network.default){
+  def this(destAddress: GroupAddress, dpt: DPType[DataPointValueType, PrimitiveType], name: String = "", net: Network = Network.default){
     this(dpt)
-    master = new StateDevice(destAddress, tt, dpt, name, net)
+    master = new StateDevice(destAddress, dpt, name, net)
     master writeSubscribe { (value: PrimitiveType) =>
       val pvalue = proxyFun(value)
       this map {_ write pvalue} 
@@ -38,9 +38,9 @@ class MultipleAddressDevice[DataPointValueType <: DPValue[PrimitiveType], Primit
   (r: TStateDevice[PrimitiveType], w: TCommandDevice[DataPointValueType, PrimitiveType]) 
   extends TStateDevice[PrimitiveType] with TCommandDevice[DataPointValueType, PrimitiveType]{
 
-  def this(raddr: GroupAddress, waddr: GroupAddress, tt: TranslatorType, dpt: DPType[DataPointValueType, PrimitiveType],
+  def this(raddr: GroupAddress, waddr: GroupAddress, dpt: DPType[DataPointValueType, PrimitiveType],
     name: String = "", net: Network = Network.default){
-    this(new StateDevice(raddr, tt, dpt, name, net), new CommandDevice(waddr, tt, dpt, name, net))
+    this(new StateDevice(raddr, dpt, name, net), new CommandDevice(waddr, dpt, name, net))
   }
 
   override def send(value: DataPointValueType) = w send value
