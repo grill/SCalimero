@@ -55,7 +55,7 @@ The \lstinline{Device} base class is an Actor, which means it can send and recei
 \section{Device in the REPL}
 It is advised to use the base Device classes only for the purpose of testing or quick scripting. In most cases it is more rewarding to create a specialzied Device class and let it inherit from \lstlisting!StateDevice! or \lstlisting!CommandDevice!. How this can be done exactly will be explained in the next chapter.
 
-To use it,
+To use it, 
 \begin{lstlisting}
 import tuwien.auto.scalimero
 import device._
@@ -74,82 +74,9 @@ import device.dtype.Boolean._
 \begin{lstlisting}
 val d2 = Device("1/1/0", SWITCH)
 \end{lstlisting}
-By writing the above code the \lstlinsting!apply! method of the companion object Device is called and instantiates a \lstlisting!StateDevice! with the given parameters.
 
-To send messages
 \begin{lstlisting}
-d1 send true
 \end{lstlisting}
-or
-\begin{lstlisting}
-d2 send on
-\end{lstlisting}
-To read messages
-\begin{lstlisting}
-try{
-    if(d1 read)
-        println("Lamp was turned on")
-    else
-        println("Lamp was turned off")
-}catch {
-    case e => println("No value was received, because of an Exception")
-\end{lstlisting}
-or
-\begin{lstlisting}
-d1 readOption match {
-    case Some(value) =>
-        if(value)
-            println("Lamp was turned on")
-        else
-            println("Lamp was turned off")
-    case _ => println("No value was received, because of an Exception")
-}
-\end{lstlisting}
-The Device base classes can only subscribe \lstlisting!WriteCallback!s.
+\section{GroupDevice}
+
 \section{SimpleDevice}
-
-The class \lstlisting{SimpleDevice} was created because of the need for an quick to write abstract with less overhead. This is accomplished by removing the Actor functionality. This class has the same read and send methods like \lstlisting!StateDevice! and some additional low level sending methods:
-
-\begin{itemize}
-  \item \textbf{readRequest} - sends a read request
-  \item \textbf{write}(value: PrimitiveType) - sends a value of primitve type
-  \item \textbf{write}(value: Array[Byte]) - sends a value of type byte array
-  \item \textbf{write}(value: String) - sends a value of type String(the format depends on \lstlisting!DPT!)
-\end{itemize}
-\section{Grouping of Devices}
-
-Grouping of Devices can be done on different levels:
-
-\begin{itemize}
-  \item \textbf{low level} - through \lstlisting!WriteCallback!s
-  \item \textbf{mid level} - through events
-  \item \textbf{high level} - through:
-    \begin{itemize}
-        \item \textbf{GroupDevice}
-        
-        \lstlisting!GroupDevice! inherits from \lstlisting!HashSet! and because of that it can be filled with Devices. With the \lstlisting!send! method a message can be sent to all Devices in the GroupDevice. The \lstlisting!setMaster! method enables you to set a master device. When the state of master device changes a message, containing the new state, is sent to all devices in the GroupDevice. Through the \lstlisting!addProxyFunction! method it is possible set a function, which will be evaluated, before the new received state will be forwarded to the other devices. The Result of this function will then be sent instead of original received value.
-        
-
-\begin{lstlisting}
-val gd = GroupDevice(d1, d2)
-
-//all lights on
-gd send on
-//or
-gd map {_ send on}
-
-gd setMaster d1
-
-//d2 will also be turned off automatically
-d1 send off
-\end{lstlisting}
-        \item \textbf{MultipleAddressDevice}
-
-        This class functions as an abstraction for a devices with a separate reading and writing address.
-\begin{lstlisting}
-val mad1 = new MultipleAddressDevice(d1, d2)
-//or
-val mad2 = new MultipleAddressDevice("1/1/1", "1/1/0", Switch)
-\end{lstlisting}
-    \end{itemize}
-\end{itemize}
