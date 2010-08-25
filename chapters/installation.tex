@@ -1,5 +1,14 @@
 \chapter{Installation}
 
-First, download the calimero package from \url{http://www.auto.tuwien.ac.at/downloads/calimero-all-2.0a4.zip} and unpack it to a detination of your choice. It contains several other archives, including 4 Java Archives (.jar), the source code of all of them and documentation of tools and the library. The core library is calimero-2.0a4.jar, this is the file you want to have on the classpath of all your calimero projects. Calimero-gui and calimero-tools are graphical and command line tools to test calimero and KNX, and to gain a better understanding of calimero by looking at their source code. The calimero-rxtx package contains an optional way of serial port access, which is not needed in most circumstances.
+To use SCalimero, you need both the calimero KNX/EIB library and SCalimero itself. They are located at \url{http://github.com/grill/SCalimero/downloads}. Somehow put them on your classpath and you should be fine. The following launches a Scala REPL with SCalimero (assuming the jars are in the current directory):
+\begin{lstlisting}
+scalac -cp calimero-2.0a4.jar -cp scalimero_2.8.0-1.0.jar
+\end{lstlisting}
 
-The important thing is to put calimero-2.0a4.jar on your classpath. How to add files to your classpath depends on your development environment and should easily be found in the corresponding manual or home page. It is a good idea to unzip the calimero-2.0a3.zip to a place where you can access the documentation comfortably. It is also useful to get familiar with the command line tools and especially their source code, because it covers some important use cases in a concise way.
+To add them both to an sbt project, add the following to your sbt project definition:
+\begin{lstlisting}
+  val calimeroDependency = "tuwien.auto" % "calimero" % "2.0a4" from "http://github.com/downloads/grill/SCalimero/calimero-2.0a4.jar",
+  val scalimeroDependency = "tuwien.auto" % "scalimero" % "1.0" from "http://github.com/downloads/grill/SCalimero/scalimero_2.8.0-1.0.jar"
+\end{lstlisting}
+
+Remember you can launch a REPL in sbt by using the \lstinline!console! action.
