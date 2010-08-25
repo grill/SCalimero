@@ -1,7 +1,7 @@
 import sbt._
 import java.io._
 
-class ImplicitGeneratorProject(info: ProjectInfo) extends DefaultProject(info)
+class SCalimero(info: ProjectInfo) extends DefaultProject(info)
 {
   lazy val genImplicits = task {args =>
     if(args.length > 1) {
@@ -29,4 +29,6 @@ class ImplicitGeneratorProject(info: ProjectInfo) extends DefaultProject(info)
       map(_.group(1)).
       map(s => println("%c".r.replaceAllIn(template, s)))
   }
+  
+  val calimero = "tuwien.auto" % "calimero" % "2.0a4" from "http://github.com/downloads/grill/SCalimero/calimero-2.0a4.jar"
 }
