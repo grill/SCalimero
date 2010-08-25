@@ -1,4 +1,4 @@
-import org.scalimero.dsl._
+import tuwien.auto.scalimero.dsl._
 
 object Example extends Application {
 
