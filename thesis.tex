@@ -1,0 +1,274 @@
+%  ----------------------------------------------------------------------------
+%
+%       Copyright (for the thesis) 2009 by [author - insert yourself]
+%
+%       This thesis is published under the
+%       Creative Commons Attribution-No Derivative Works 3.0 Austria License
+%       as detailed at http://creativecommons.org/licenses/by-nd/3.0/at/
+%
+%  ----------------------------------------------------------------------------
+%  Template credits and license:
+%  ----------------------------------------------------------------------------
+%
+%       "Fakult�t f�r Informatik" diploma/master thesis template 2008
+%
+%       based upon "Diploma thesis template 2005" by lukas.silberbauer(at)gmx.at
+%       based upon "Diplomarbeit mit LaTeX" by Tobias Erbsland
+%       incorporating a title page by Informatik-Forum user "Baby"
+%       polished and ported to the TU fonts package by Jakob Petsovits
+%
+%       published under the terms of
+%
+%  ----------------------------------------------------------------------------
+%  "THE BEER-WARE LICENSE":
+%  <lukas.silberbauer(at)gmx.at> wrote this file. As long as you retain this
+%  notice you can do whatever you want with this stuff. If we meet some day,
+%  and you think this stuff is worth it, you can buy me (us) a beer in return.
+%  ----------------------------------------------------------------------------
+%
+%  (end of template credits)
+%
+
+%
+% Variablen, die fürs Deckblatt verwendet werden.
+% Die grobe Dokumentenstruktur findet sich übrigens ganz unten in dieser Datei.
+%
+\newcommand{\thesistype}{TUTORIAL}
+\newcommand{\thesistitle}{Scalimero}
+\newcommand{\thesissubtitle}{ }
+
+\newcommand{\thesisauthor}{Gabriel A. Grill and Alexander C. Steiner}
+\newcommand{\matrikelnr}{ }
+\newcommand{\zuerlangendertitel}{ }
+\newcommand{\studium}{ }
+
+\newcommand{\institut}{Institut f\"{u}r rechnergest\"{u}tzte Automation}
+\newcommand{\institutsuni}{Technische Universit\"{a}t Wien} % disabled by default
+\newcommand{\betreuer}{Ao.Univ.Prof. Dr. Wolfgang Kastner}
+\newcommand{\assistent}{ }
+
+%
+% Globale Weichenstellungen f�rs ganze Dokument.
+%
+\documentclass[%
+  pdftex,%              PDFTex verwenden
+  a4paper,%             A4 Papier
+  oneside,%             Einseitig
+  bibtotocnumbered,%    Literaturverzeichnis nummeriert einfügen
+  idxtotoc,%            Index ins Verzeichnis einfügen
+  halfparskip,%         Europäischer Satz mit abstand zwischen Absätzen
+  chapterprefix,%       Kapitel anschreiben als Kapitel
+  %headsepline,%         Linie nach Kopfzeile
+  %footsepline,%         Linie vor Fusszeile
+  12pt%                 Größere Schrift, besser lesbar am Bildschrim
+]{scrbook}
+
+
+%
+% Paket für die Indexerstellung.
+%
+\usepackage{makeidx}
+
+%
+% Paket für Übersetzungen ins Deutsche
+%
+\usepackage[german, english]{babel}
+
+%
+% Paket, um \today auch im Format dd.mm.yyyy anzeigen zu können
+%  (für die Titelseite, mit \numdate)
+%
+\usepackage[german]{isodate}
+
+%
+% Pakete um Latin1 Zeichnensätze verwenden zu können und die dazu
+%  passenden Schriften.
+%
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+%
+% Paket zum Erweitern der Tabelleneigenschaften
+%
+\usepackage{array}
+
+%
+% Paket um Grafiken einbetten zu können
+%
+\usepackage{graphicx}
+
+
+%
+% Zeilenabstand einstellen
+%
+\usepackage{setspace}
+\onehalfspacing
+%\doublespacing
+
+
+%\setlength{\baselineskip}{24pt}
+%\renewcommand{\baselinestretch}{1.5}
+
+
+%
+% define variables
+%
+\def\maintitle#1{\gdef\maintitle{#1}}
+\def\subtitle#1{\gdef\subtitle{#1}}
+
+%
+% Zeilenumbruch bei Bildbeschreibungen.
+%
+\setcapindent{1em}
+
+%
+% kopf und fusszeilen
+%
+\pagestyle{headings}
+
+%
+% mathematische symbole aus dem AMS Paket.
+%
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+%
+% Type 1 Fonts für bessere darstellung in PDF verwenden.
+%
+\usepackage{mathptmx}           % Times + passende Mathefonts
+%\usepackage[scaled=.92]{helvet} % skalierte Helvetica als \sfdefault
+\usepackage{courier}            % Courier als \ttdefault
+\usepackage{tufonts}            % TU-Schriften als \sfdefault
+
+%
+% Spezielle Schrift verwenden.
+%
+\renewcommand{\encodingdefault}{T1}
+\renewcommand{\familydefault}{\rmdefault}
+\renewcommand{\bfdefault}{db}   % bold would be too bold, use demibold instead
+\renewcommand{\mddefault}{l}    % use TU Light, looks better than medium weight
+
+
+
+%
+% Paket um Textteile drehen zu können
+%
+\usepackage{rotating}
+
+
+%
+% Für Acronyme
+%
+\usepackage{acronym}
+
+%
+% Package für Farben im PDF
+%
+\usepackage{color}
+
+%
+% Paket für Links innerhalb des PDF Dokuments
+%
+\definecolor{LinkColor}{rgb}{0,0,0.5}
+
+\usepackage[
+pdfauthor={\thesisauthor},
+bookmarks=true, % PDF bookmarks allowed. NB! The level depth of bookmarks is the same as in the TOC.
+unicode=true, % PDF bookmarks in Unicode.
+bookmarksnumbered=true, % Section numbers in PDF bookmarks.
+bookmarksopenlevel=1, % The open level in PDF bookmarks.
+hyperindex=true, % Hyperlinked index.
+plainpages=false, % Name arabic and roman page numbers differently.
+colorlinks=true, % Links are marked as coloured text, not coloured box.
+linkcolor=linkc, % The colour for in-document links (e.g. in the table of contents).
+citecolor = citec, % The colour for bibliographic citations.
+urlcolor=urlc, % The colour for hyperlinks to the Net.
+pdfpagelayout=OneColumn % Continuous page scrolling.
+]{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=LinkColor,
+  citecolor=LinkColor,
+  filecolor=LinkColor,
+  menucolor=LinkColor,
+  pagecolor=LinkColor,
+  urlcolor=LinkColor
+}
+
+%
+% Paket um Listings sauber zu formatieren.
+%
+\usepackage[savemem]{listings}
+\lstloadlanguages{TeX}
+
+%
+% ---------------------------------------------------------------------------
+% Listing Definitionen für PHP Code
+%
+\definecolor{lbcolor}{rgb}{0.85,0.85,0.85}
+\lstset{language=[LaTeX]TeX,
+  numbers=left,
+  stepnumber=1,
+  numbersep=5pt,
+  numberstyle=\tiny,
+  breaklines=true,
+  breakautoindent=true,
+  postbreak=\space,
+  tabsize=2,
+  basicstyle=\ttfamily\footnotesize,
+  showspaces=false,
+  showstringspaces=false,
+  extendedchars=true,
+  backgroundcolor=\color{lbcolor}
+}
+
+% ---------------------------------------------------------------------------
+% Neue Umgebungen
+% ---------------------------------------------------------------------------
+
+\newenvironment{ListChanges}%
+  {\begin{list}{$\diamondsuit$}{}}%
+  {\end{list}}
+
+%
+% Index erzeugen
+%
+\makeindex
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Document structure
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%\pagenumbering{alph}
+\input{chapters/titlepage}
+
+%\selectlanguage{english}
+%\pagenumbering{roman}
+%\setcounter{page}{1}
+
+%\input{chapters/abstract}
+%\input{chapters/acknowledgements}
+
+\tableofcontents
+
+%\pagenumbering{arabic}
+%\setcounter{page}{1}
+
+\input{chapters/introduction}
+\input{chapters/installation}
+\input{chapters/dsl}
+\input{chapters/devices}
+\input{chapters/h2ddevices}
+\input{chapters/conclusion}
+
+%\printindex
+\end{document}
+
+%
+% EOF
+%

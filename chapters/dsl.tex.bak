@@ -1,0 +1,45 @@
+\chapter{DSL}
+
+\section{Examples}
+The scalimero DSL is an easy interface for accessing KNX devices and meant to be used in the Scala interpreter. To use it,
+\begin{lstlisting}
+import tuwien.auto.scalimero.dsl._
+\end{lstlisting}
+Then create a network and open it using
+\begin{lstlisting}
+Network("10.0.0.5") open
+\end{lstlisting}
+The IP address specified here is the KNX router used to access the network. Then, we need to create some devices.
+\begin{lstlisting}
+val lA = Lamp("1/1/0")
+val lB = Lamp("1/1/1")
+\end{lstlisting}
+Then we can turn the lamps on and off.
+\begin{lstlisting}
+lA turn on
+lA turn off
+\end{lstlisting}
+More general:
+\begin{lstlisting}
+lB send true
+lB send false
+\end{lstlisting}
+We can also read from the devices.
+\begin{lstlisting}
+val b = lA.read
+\end{lstlisting}
+Note that b is of type \lstinline!Boolean!, it gets converted from KNX data automatically.
+
+You can also subscribe to events:
+\begin{lstlisting}
+lA.eventSubscribe(on) {
+  println("lA has been turned on")
+}
+\end{lstlisting}
+
+If you want to be notified for every write on the device, subscribe a write callback:
+\begin{lstlisting}
+lA.writeSubscribe{
+  newstatus : Boolean =>
+  println("lA status: " + newstatus)
+}

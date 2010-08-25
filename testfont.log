@@ -1,0 +1,31 @@
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdftex 2010.5.19)  4 AUG 2010 17:05
+entering extended mode
+ %&-line parsing enabled.
+**testfont
+(/usr/share/texmf/tex/plain/base/testfont.tex
+\m=\count26
+\n=\count27
+\p=\count28
+\dim=\dimen16
+\skewtrial=\count29
+ 
+Name of the font to test = ftsb7t.tfm
+! Font \testfont=ftsb7t not loadable: Metric (TFM) file not found.
+<to be read again> 
+                   \spaceskip 
+\startfont ...ont \testfont =\fontname \spaceskip 
+                                                  =0pt \leftline {\sevenrm T...
+
+\init ...test = } \read -1 to\fontname \startfont 
+                                                  \message {Now type a test ...
+l.208 \ifx\noinit!\else\init
+                            \fi
+? quit
+OK, entering \batchmode...
+ Now type a test command (\help for help):)
+! Emergency stop.
+<*> testfont
+            
+*** (job aborted, no legal \end found)
+
+!  ==> Fatal error occurred, no output PDF file produced!
