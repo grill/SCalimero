@@ -12,7 +12,7 @@ In Scalimero a more decentralized approach was chosen. Devices were introduced.
     Can be passed as a String or GroupAddress object to the constructor of Device.
   \item \textbf{DPType} - Name: dpt
 
-    \lstinline{DPType} is a wrapper class for \lstinline{DPT}, which means a instance of DPType or DPT can be passed as constructor parameter.
+    \lstinline!DPType! is a wrapper class for \lstinline!DPT!, which means a instance of DPType or DPT can be passed as constructor parameter.
   \item \textbf{Name}[optional] - Name: name
 
     The name is a String an will be given to the DataPoint instance encapsulated in the Device class.
@@ -28,7 +28,7 @@ In Scalimero a more decentralized approach was chosen. Devices were introduced.
   \item \textbf{TStateDevice} - Every device with the read method inherits this trait.
 \end{itemize}
 
-The \lstinline{Device} base class is an Actor, which means it can send and receive messages. Because of this ability it is possible to send to the device actor \lstlisting!ProcessEvent!s or \lstlisting!WriteEvent!s to trigger subscribed events.
+The \lstinline!Device! base class is an Actor, which means it can send and receive messages. Because of this ability it is possible to send to the device actor \lstinline!ProcessEvent!s or \lstinline!WriteEvent!s to trigger subscribed events.
 
 \paragraph{Subclasses of Device:}
 \begin{itemize}
@@ -38,22 +38,22 @@ The \lstinline{Device} base class is an Actor, which means it can send and recei
 
     \textbf{send}(d: DataPointValue)
 
-        \lstlinsting!DataPointValue! is a wrapper class for the primitive types specified through the \lstlisting!DPType!. It's possible to pass a instance of \lstlisting!DataPointValue! or primitive type value.
+        \lstinline!DataPointValue! is a wrapper class for the primitive types specified through the \lstinline!DPType!. It's possible to pass a instance of \lstinline!DataPointValue! or primitive type value.
   \item \textbf{StateDevice}
 
-  This class has the ability to send and read messages. Even though the name of the class is \lstlisting!StateDevice!, no state is stored in this class. It has got two methods to read values from the KNX Network:
+  This class has the ability to send and read messages. Even though the name of the class is \lstinline!StateDevice!, no state is stored in this class. It has got two methods to read values from the KNX Network:
     \begin{itemize}
         \item \textbf{read}: PrimitveType
 
-            Returns a value with the primitive type chosen through the \lstlisting!DPType!. If it's not possible to get a message, an Exception is thrown.
+            Returns a value with the primitive type chosen through the \lstinline!DPType!. If it's not possible to get a message, an Exception is thrown.
         \item \textbf{readOption}: Option[PrimitiveType]
 
-            Returns a value with the primitive type chosen through the \lstlisting!DPType! encapsulated in an Option.
+            Returns a value with the primitive type chosen through the \lstinline!DPType! encapsulated in an Option.
     \end{itemize}
 \end{itemize}
 
 \section{Device in the REPL}
-It is advised to use the base Device classes only for the purpose of testing or quick scripting. In most cases it is more rewarding to create a specialzied Device class and let it inherit from \lstlisting!StateDevice! or \lstlisting!CommandDevice!. How this can be done exactly will be explained in the next chapter.
+It is advised to use the base Device classes only for the purpose of testing or quick scripting. In most cases it is more rewarding to create a specialzied Device class and let it inherit from \lstinline!StateDevice! or \lstinline!CommandDevice!. How this can be done exactly will be explained in the next chapter.
 
 To use it,
 \begin{lstlisting}
@@ -66,15 +66,15 @@ Then create a network and open it. Now the creation of the devices can begin.
 \begin{lstlisting}
 val d1 = Device("1/1/1", Boolean.SWITCH)
 \end{lstlisting}
-To shorten the qualification of the \lstlisting!DPType! just
+To shorten the qualification of the \lstinline!DPType! just
 \begin{lstlisting}
 import device.dtype.Boolean._
 \end{lstlisting}
- Now all Boolean \lstlisting!DPType!s are in scope an it is possible to write
+ Now all Boolean \lstinline!DPType!s are in scope an it is possible to write
 \begin{lstlisting}
 val d2 = Device("1/1/0", SWITCH)
 \end{lstlisting}
-By writing the above code the \lstlinsting!apply! method of the companion object Device is called and instantiates a \lstlisting!StateDevice! with the given parameters.
+By writing the above code the \lstinline!apply! method of the companion object Device is called and instantiates a \lstinline!StateDevice! with the given parameters.
 
 To send messages
 \begin{lstlisting}
@@ -105,29 +105,29 @@ d1 readOption match {
     case _ => println("No value was received, because of an Exception")
 }
 \end{lstlisting}
-The Device base classes can only subscribe \lstlisting!WriteCallback!s.
+The Device base classes can only subscribe \lstinline!WriteCallback!s.
 \section{SimpleDevice}
 
-The class \lstlisting{SimpleDevice} was created because of the need for an quick to write abstract with less overhead. This is accomplished by removing the Actor functionality. This class has the same read and send methods like \lstlisting!StateDevice! and some additional low level sending methods:
+The class \lstinline!SimpleDevice! was created because of the need for an quick to write abstract with less overhead. This is accomplished by removing the Actor functionality. This class has the same read and send methods like \lstinline!StateDevice! and some additional low level sending methods:
 
 \begin{itemize}
   \item \textbf{readRequest} - sends a read request
   \item \textbf{write}(value: PrimitiveType) - sends a value of primitve type
   \item \textbf{write}(value: Array[Byte]) - sends a value of type byte array
-  \item \textbf{write}(value: String) - sends a value of type String(the format depends on \lstlisting!DPT!)
+  \item \textbf{write}(value: String) - sends a value of type String(the format depends on \lstinline!DPT!)
 \end{itemize}
 \section{Grouping of Devices}
 
 Grouping of Devices can be done on different levels:
 
 \begin{itemize}
-  \item \textbf{low level} - through \lstlisting!WriteCallback!s
+  \item \textbf{low level} - through \lstinline!WriteCallback!s
   \item \textbf{mid level} - through events
   \item \textbf{high level} - through:
     \begin{itemize}
         \item \textbf{GroupDevice}
         
-        \lstlisting!GroupDevice! inherits from \lstlisting!HashSet! and because of that it can be filled with Devices. With the \lstlisting!send! method a message can be sent to all Devices in the GroupDevice. The \lstlisting!setMaster! method enables you to set a master device. When the state of master device changes a message, containing the new state, is sent to all devices in the GroupDevice. Through the \lstlisting!addProxyFunction! method it is possible set a function, which will be evaluated, before the new received state will be forwarded to the other devices. The Result of this function will then be sent instead of original received value.
+        \lstinline!GroupDevice! inherits from \lstinline!HashSet! and because of that it can be filled with Devices. With the \lstinline!send! method a message can be sent to all Devices in the GroupDevice. The \lstinline!setMaster! method enables you to set a master device. When the state of master device changes a message, containing the new state, is sent to all devices in the GroupDevice. Through the \lstinline!addProxyFunction! method it is possible set a function, which will be evaluated, before the new received state will be forwarded to the other devices. The Result of this function will then be sent instead of original received value.
         
 
 \begin{lstlisting}
