@@ -1,5 +1,5 @@
-\chapter{How to write specialized devices}
-This chapter is about learning how to write specialized Devices(Lamp, Dimmer, etc.) using the \lstinline!Lamp! class as an example.
+\chapter{How to write Specialized Devices}
+This chapter shows how to write specialized Devices(Lamp, Dimmer, etc.), using the \lstinline!Lamp! class as an example.
 
 At first some imports have to be written:
 \begin{lstlisting}
@@ -9,17 +9,19 @@ import tuwien.auto.scalimero.device.dtype.Boolean._
 import tuwien.auto.scalimero.device.dtype.translatortype._
 import tuwien.auto.calimero.GroupAddress
 \end{lstlisting}
-For the next step it is advised to name the new class like an assailable object. In this case this going to be Lamp. Then it's time to decide if Lamp should inherit from \lstinline!StateDevice! or \lstinline!CommandDevice!.
+For the next step it is advised to name the new class after a physical object. In this case this going to be Lamp. Then it's time to decide if Lamp should inherit from \lstinline!StateDevice! or \lstinline!CommandDevice!.
 \begin{lstlisting}
 class Lamp(address: GroupAddress) extends StateDevice(address, SWITCH)
 //or
 class Lamp(address: GroupAddress) extends CommandDevice(address, SWITCH)
 \end{lstlisting}
-After that it's nice some times to write some alias to make the use of the new class more readable.
+Generally, if your device allows reading, use \lstinline!StateDevice!, otherwise use \lstinline!CommandDevice!.
+
+After that it's nice some times to write some aliases and utility methods to make the use of the new class more intuitive.
 \begin{lstlisting}
   def turn(value: BooleanValue) = send(value)
 \end{lstlisting}
- Thanks to the above statement it's possible to write\lstinline!lamp1 turn on!.
+ Thanks to the above statement it's possible to write \lstinline!lamp1 turn on!.
  
  Then it's advised to write some events for the new device:
 \begin{lstlisting}
@@ -28,19 +30,23 @@ After that it's nice some times to write some alias to make the use of the new c
     off ->  {(b: Boolean) => !b}
   )
 \end{lstlisting}
-Because \lstinline!events! was overriden and two events were added, the example below is possible:
+The key element of the map is the events identifier, while the second elemnt is function that decides if the event occured. Whenever a state update is received, the function is evaluated, and if it returns true, the subscribed event callbacks are executed.
+
+Because \lstinline!events! was overriden and two events were added, the example below is now possible:
 \begin{lstlisting}
 //define our lamps
 val lA = Lamp("1/1/0")
 val lB = Lamp("1/1/1")
 
-//subscribe to lamp A's on event, i.e. lB gets turned on whenever lA is turned on
+//subscribe to lamp A's on event, i.e. lB gets turned on
+//whenever lA is turned on
 lA.eventSubscribe(on){
   lB turn on
 }
 \end{lstlisting}
 
-The last part of writing a specialized device is rather easy. \begin{lstlisting}
+Finally, it is advised to write a companion object that at least contains constructor methods to increase readability.
+\begin{lstlisting}
 object Lamp extends TypeOfDevice {
   def apply(address : GroupAddress) = new Lamp(address)
 }
