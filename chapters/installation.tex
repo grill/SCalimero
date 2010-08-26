@@ -1,14 +1,16 @@
 \chapter{Installation}
 
-To use SCalimero, you need both the calimero KNX/EIB library and SCalimero itself. They are located at \url{http://github.com/grill/SCalimero/downloads}. Somehow put them on your classpath and you should be fine. The following launches a Scala REPL with SCalimero (assuming the jars are in the current directory):
+To use Scalimero, you need both the Calimero KNX/EIB library and Scalimero itself. They are located at \url{http://github.com/grill/SCalimero/downloads}. Somehow put them on your classpath and you should be fine. The following launches a Scala REPL with Scalimero (assuming the jars are in the current directory):
 \begin{lstlisting}
-scalac -cp calimero-2.0a4.jar -cp scalimero_2.8.0-1.0.jar
+scala -cp calimero-2.0a4.jar -cp scalimero_2.8.0-1.0.jar
 \end{lstlisting}
 
 To add them both to an sbt project, add the following to your sbt project definition:
 \begin{lstlisting}
-  val calimeroDependency = "tuwien.auto" % "calimero" % "2.0a4" from "http://github.com/downloads/grill/SCalimero/calimero-2.0a4.jar",
-  val scalimeroDependency = "tuwien.auto" % "scalimero" % "1.0" from "http://github.com/downloads/grill/SCalimero/scalimero_2.8.0-1.0.jar"
+  val calimeroDependency = "tuwien.auto" % "calimero" % "2.0a4" from
+    "http://github.com/downloads/grill/SCalimero/calimero-2.0a4.jar",
+  val scalimeroDependency = "tuwien.auto" % "scalimero" % "1.0" from
+    "http://github.com/downloads/grill/SCalimero/scalimero_2.8.0-1.0.jar"
 \end{lstlisting}
 
 Remember you can launch a REPL in sbt by using the \lstinline!console! action.
